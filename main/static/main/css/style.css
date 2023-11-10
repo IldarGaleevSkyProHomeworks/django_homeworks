@@ -1,0 +1,34 @@
+.wrapper{
+    min-height: 100vh;
+    display:flex;
+}
+
+
+
+.custom-carousel-caption{
+color:white !important; 
+background-color:rgba(0, 0, 0, 0.50);
+backdrop-filter: blur(4px);
+}
+
+.custom-carousel-indicators>button{
+    background-color:rgba(143, 143, 143, 0.5) !important;
+}
+
+div#logo{
+    width: 100px;
+    height: 100px;
+    background-image: url('/static/main/img/hnh_logo.png');
+    background-size: cover;
+    opacity: 0.25;
+}
+
+footer a {
+    color: var(--bs-body-color);
+    text-decoration: none
+}
+
+footer a:hover, footer a:focus {
+    color: var(--bs-link-hover-color);
+    text-decoration: underline
+}
