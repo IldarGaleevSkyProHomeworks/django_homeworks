@@ -4,9 +4,12 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
 from django.shortcuts import render
 
+from main.models import Product
+
 
 # Create your views here.
 def index(request: WSGIRequest):
+    pprint(Product.objects.all().order_by('-id')[:5][::-1])
     return render(request, 'main/index.html', {'title': 'Главная'})
 
 
