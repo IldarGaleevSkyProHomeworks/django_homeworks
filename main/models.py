@@ -1,6 +1,6 @@
-from datetime import datetime
 
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 
@@ -28,8 +28,8 @@ class Product(models.Model):
     description = models.TextField(max_length=1024, verbose_name='описание', **nullable)
     category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='категория')
     price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name='цена', default=0.0)
-    create_date = models.DateTimeField(verbose_name='дата создания', default=datetime.now)
-    modify_date = models.DateTimeField(verbose_name='дата изменения', default=datetime.now)
+    create_date = models.DateTimeField(verbose_name='дата создания', default=timezone.now)
+    modify_date = models.DateTimeField(verbose_name='дата изменения', default=timezone.now)
     preview_image = models.ImageField(upload_to='product_preview_images/', verbose_name='изображение', **nullable)
 
     def __str__(self):
