@@ -4,7 +4,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
 from django.shortcuts import render
 
-from main.models import Product
+from main.models import Product, Contact
 
 
 # Create your views here.
@@ -18,7 +18,7 @@ def catalog(request: WSGIRequest):
     count = int(count) if count else 6
     items = [
         {
-            'id':n+1,
+            'id': n + 1,
             'title': f'Пенгвинчег {n + 1}',
             'description': f'Пенгвинчег {n + 1} самый лучший, среди {count} пенгвинчегов'
         }
@@ -41,12 +41,19 @@ def contacts(request: WSGIRequest):
         in_memory_db.append(new_item)
         pprint(new_item)
 
+    contact_list = [{
+        'name': contact.name,
+        'phones': [phone.strip() for phone in contact.phones.split(',')],
+        'address': contact.address
+    } for contact in Contact.objects.all()]
+
     return render(
         request,
         'main/contacts.html',
         {
             'title': 'Контакты',
-            'feedback': [{'name': f'{item["name"][0]}***', 'message':item["message"]} for item in in_memory_db[-3:]]
+            'feedback': [{'name': f'{item["name"][0]}***', 'message': item["message"]} for item in in_memory_db[-3:]],
+            'contacts': contact_list
         })
 
 

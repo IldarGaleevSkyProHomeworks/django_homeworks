@@ -2,21 +2,22 @@
 {% load static %}
 
 {% block page_content %}
+
+{% for contact in contacts %}
   <div class="card my-3">
-    <div class="card-header">Наши контакты</div>
+    <div class="card-header">{{contact.name}}</div>
     <address>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
-          <a href="tel:+71231231234">+71231231234</a>
+          {% for phone in contact.phones %}
+          <a class="phone" href="tel:{{phone}}">{{phone}}</a>
+          {% endfor %}
         </li>
-        <li class="list-group-item">
-          <a href="mailto:some-mail@example.com">some-mail@example.com</a>
-        </li>
-        <li class="list-group-item">ул. Светлая, д. 34, подъезд 3/4</li>
+        <li class="list-group-item">{{contact.address}}</li>
       </ul>
     </address>
   </div>
-
+{% endfor %}
   <div class="card my-3">
     <div class="card-header">Задайте ваш вопрос</div>
     <div class="card-body">
