@@ -13,6 +13,13 @@
         <li class="nav-item">
           <a class="nav-link {% if url_name == 'contacts' %}active{% endif %}" href="{% url 'contacts' %}">Контакты</a>
         </li>
+
+        {%if debug %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'admin:index' %}" target="_blank" rel="noopener noreferrer">Администрирование</a>
+        </li>
+        {% endif %}
+
       {% endwith %}
     </ul>
     <!--form class="d-flex" role="search">
