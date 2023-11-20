@@ -14,11 +14,20 @@
           <a class="nav-link {% if url_name == 'contacts' %}active{% endif %}" href="{% url 'contacts' %}">Контакты</a>
         </li>
 
-        {%if debug %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'admin:index' %}" target="_blank" rel="noopener noreferrer">Администрирование</a>
-        </li>
-        {% endif %}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Управление</a>
+        <ul class="dropdown-menu">
+
+          {%if debug %}
+<!--          <li><hr class="dropdown-divider"></li>-->
+          <li class="nav-item">
+            <a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank" rel="noopener noreferrer">Django admin</a>
+          </li>
+          {% endif %}
+        </ul>
+      </li>
+
+
 
       {% endwith %}
     </ul>
