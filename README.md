@@ -1,4 +1,4 @@
-# Домашняя работа 6.3
+# Домашняя работа 6.4
 
 
 1. Установите зависимости
@@ -31,3 +31,22 @@ python .\manage.py mainfill
 ``` PowerShell
 python .\manage.py runserver
 ```
+
+## Переменные окружения
+
+### Postgres
+
+| Переменная  | Файл настроек                            | Назначение                          |
+|-------------|------------------------------------------|-------------------------------------|
+| PG_NAME     | [config/settings.py](config/settings.py) | Имя базы данных                     |
+| PG_USER     | [config/settings.py](config/settings.py) | Имя пользователя для подключения    |
+| PG_PASSWORD | [config/settings.py](config/settings.py) | Пароль пользователя для подключения |
+| PG_HOST     | [config/settings.py](config/settings.py) | Имя хоста с сервером                |
+| PG_PORT     | [config/settings.py](config/settings.py) | Порт сервера                        |
+
+
+### Страница товаров
+
+| Переменная            | Файл настроек                | Назначение                     |
+|-----------------------|------------------------------|--------------------------------|
+| MAIN_CATALOG_PER_PAGE | [main/apps.py](main/apps.py) | Количество товаров на странице |

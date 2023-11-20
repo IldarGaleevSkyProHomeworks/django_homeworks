@@ -1,21 +1,78 @@
 {% extends 'main/share/_base.html' %}
 {% load static %}
+{% load product_image_filter %}
 
 {% block page_content %}
   <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
-    
-    {% for item in items %}
-    <div class="col">
-      <div class="card">
-        <img src="{% static 'main/img/Pinguin.png' %}" class="card-img-top p-2" alt="..." />
-        <div class="card-body">
-          <h5 class="card-title">{{item.title}}</h5>
-          <p class="card-text">{{item.description}}</p>
-          <a href="{% url "catalog" %}?count={{item.id|add:'8'}}">+ еще 8 симпотяг!</a>
+    {% for object in page.object_list %}
+      <div class="col">
+        <div class="card h-100">
+          <img src="{{ object.preview_image|product_image }}" class="card-img-top" />
+
+          <div class="card-body">
+            <p class="card-text">
+              {% if object.description %}{{ object.description }}{% endif %}
+            </p>
+          </div>
+          <div class="card-footer">
+            <h4 class="my-2 font-weight-normal text-center text-truncate px-2" title="{{ object.name }}" data-bs-toggle="tooltip" data-bs-placement="bottom">{{ object.name }}</h4>
+            <h5 class="card-title text-center">{{ object.price }}&#x20bd;</h5>
+            <button type="button" class="w-100 btn btn-lg btn-success my-2">Купить</button>
+          </div>
         </div>
       </div>
-    </div>
     {% endfor %}
-   
+
+    <div class="col">
+        <div class="card h-100">
+          <button class="btn w-100 h-100" type="button"  data-bs-target="#createProductForm" data-bs-toggle="modal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Добавить товар">
+              <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
   </div>
+{% if page.paginator.num_pages > 1 %}
+  <nav aria-label="Страницы с товарами" class="mt-4">
+    <ul class="pagination justify-content-center">
+
+        <li class="page-item {% if page.has_previous == False %}disabled{% endif %}">
+          <a class="page-link" href="{% if page.has_previous %}?page={{page.previous_page_number}}{% else %}#{% endif %}" aria-label="Предыдущая"><span aria-hidden="true">&laquo;</span></a>
+        </li>
+
+      {% for page_id in page.paginator.page_range %}
+        {% if page.number == page_id %}
+          <li class="page-item active" aria-current="page">
+            <span class="page-link">{{ page_id }}</span>
+          </li>
+        {% else %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{page_id}}">{{ page_id }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+      <li class="page-item {% if page.has_next == False %}disabled{% endif %}">
+          <a class="page-link" href="{% if page.has_next %}?page={{page.next_page_number}}{% else %}#{% endif %}" aria-label="Предыдущая"><span aria-hidden="true">&raquo;</span></a>
+        </li>
+    </ul>
+  </nav>
+{% endif %}
+
+<div class="modal fade" id="createProductForm" tabindex="-1" aria-labelledby="createProductFormLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="createProductFormLabel">Добавить новый товар</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% include 'main/share/forms/_form_product.html' %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 {% endblock %}

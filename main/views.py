@@ -1,31 +1,45 @@
 from pprint import pprint
 
 from django.core.handlers.wsgi import WSGIRequest
-from django.http import JsonResponse
+from django.core.paginator import Paginator
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render
 
+from main.forms import ProductForm
 from main.models import Product, Contact
+from main.apps import MainConfig
 
 
 # Create your views here.
 def index(request: WSGIRequest):
-    pprint(Product.objects.all().order_by('-id')[:5][::-1])
+    # pprint(Product.objects.all().order_by('-id')[:5][::-1])
     return render(request, 'main/index.html', {'title': 'Главная'})
 
 
 def catalog(request: WSGIRequest):
-    count = request.GET.get('count')
-    count = int(count) if count else 6
-    items = [
-        {
-            'id': n + 1,
-            'title': f'Пенгвинчег {n + 1}',
-            'description': f'Пенгвинчег {n + 1} самый лучший, среди {count} пенгвинчегов'
-        }
-        for n in range(count)
-    ]
 
-    return render(request, 'main/catalog.html', {'title': 'Каталог', 'items': items})
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+
+    products = Product.objects.order_by('id').all()
+    paginator = Paginator(products, MainConfig.catalog_per_page)
+
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+
+    context = {
+        'title': 'Каталог',
+        'page': page,
+        'form': ProductForm()
+    }
+
+    return render(
+        request,
+        'main/catalog.html',
+        context=context
+    )
 
 
 in_memory_db = []

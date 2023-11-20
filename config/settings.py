@@ -25,6 +25,10 @@ SECRET_KEY = "django-insecure-dh_vr-pdwm3f34#*ig3j8tyvg73@hssgmzvj#zsa9^^s#azb_f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+INTERNAL_IPS = (
+    '127.0.0.1',
+)
+
 ALLOWED_HOSTS = []
 
 
@@ -36,8 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "bootstrap5",
     "django.contrib.staticfiles",
+    "widget_tweaks",
 
     "main"
 ]
