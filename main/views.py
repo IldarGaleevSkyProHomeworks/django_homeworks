@@ -14,18 +14,17 @@ def index(request: WSGIRequest):
 
 
 def catalog(request: WSGIRequest):
-    count = request.GET.get('count')
-    count = int(count) if count else 6
-    items = [
-        {
-            'id': n + 1,
-            'title': f'Пенгвинчег {n + 1}',
-            'description': f'Пенгвинчег {n + 1} самый лучший, среди {count} пенгвинчегов'
-        }
-        for n in range(count)
-    ]
 
-    return render(request, 'main/catalog.html', {'title': 'Каталог', 'items': items})
+    context = {
+        'title': 'Каталог',
+        'object_list': Product.objects.all()
+    }
+
+    return render(
+        request,
+        'main/catalog.html',
+        context=context
+    )
 
 
 in_memory_db = []

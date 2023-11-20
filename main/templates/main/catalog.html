@@ -4,14 +4,18 @@
 {% block page_content %}
   <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
     
-    {% for item in items %}
+    {% for object in object_list %}
     <div class="col">
-      <div class="card">
-        <img src="{% static 'main/img/Pinguin.png' %}" class="card-img-top p-2" alt="..." />
+      <div class="card h-100">
+        <h4 class="my-2 font-weight-normal text-center text-truncate px-2" title="{{object.name}}" data-bs-toggle="tooltip" data-bs-placement="bottom">{{object.name}}</h4>
+
+        <img src={%if object.preview_image %}"{{object.preview_image.url}}"{%else%}"{% static '/img/hnh_logo.png' %}"{%endif%} class="card-img-top p-2" alt="..." />
         <div class="card-body">
-          <h5 class="card-title">{{item.title}}</h5>
-          <p class="card-text">{{item.description}}</p>
-          <a href="{% url "catalog" %}?count={{item.id|add:'8'}}">+ еще 8 симпотяг!</a>
+          <p class="card-text">{% if object.description %}{{object.description}}{% endif %}</p>
+        </div>
+        <div class="card-footer">
+            <h5 class="card-title text-center">{{object.price}}&#x20bd;</h5>
+            <button type="button" class="w-100 btn btn-lg btn-success my-2">Купить</button>
         </div>
       </div>
     </div>
