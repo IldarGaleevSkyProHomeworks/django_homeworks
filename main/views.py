@@ -2,9 +2,10 @@ from pprint import pprint
 
 from django.core.handlers.wsgi import WSGIRequest
 from django.core.paginator import Paginator
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render
 
+from main.forms import ProductForm
 from main.models import Product, Contact
 from main.apps import MainConfig
 
@@ -17,7 +18,12 @@ def index(request: WSGIRequest):
 
 def catalog(request: WSGIRequest):
 
-    products = Product.objects.all()
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+
+    products = Product.objects.order_by('id').all()
     paginator = Paginator(products, MainConfig.catalog_per_page)
 
     page_number = request.GET.get('page')
@@ -25,7 +31,8 @@ def catalog(request: WSGIRequest):
 
     context = {
         'title': 'Каталог',
-        'page': page
+        'page': page,
+        'form': ProductForm()
     }
 
     return render(

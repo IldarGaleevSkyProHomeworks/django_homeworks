@@ -22,6 +22,16 @@
         </div>
       </div>
     {% endfor %}
+
+    <div class="col">
+        <div class="card h-100">
+          <button class="btn w-100 h-100" type="button"  data-bs-target="#createProductForm" data-bs-toggle="modal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Добавить товар">
+              <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
   </div>
 {% if page.paginator.num_pages > 1 %}
   <nav aria-label="Страницы с товарами" class="mt-4">
@@ -48,4 +58,21 @@
     </ul>
   </nav>
 {% endif %}
+
+<div class="modal fade" id="createProductForm" tabindex="-1" aria-labelledby="createProductFormLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="createProductFormLabel">Добавить новый товар</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% include 'main/share/forms/_form_product.html' %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 {% endblock %}
