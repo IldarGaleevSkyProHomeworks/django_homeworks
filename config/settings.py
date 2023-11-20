@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "bootstrap5",
     "django.contrib.staticfiles",
 
     "main"
