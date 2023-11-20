@@ -1,10 +1,12 @@
 from pprint import pprint
 
 from django.core.handlers.wsgi import WSGIRequest
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render
 
 from main.models import Product, Contact
+from main.apps import MainConfig
 
 
 # Create your views here.
@@ -15,9 +17,15 @@ def index(request: WSGIRequest):
 
 def catalog(request: WSGIRequest):
 
+    products = Product.objects.all()
+    paginator = Paginator(products, MainConfig.catalog_per_page)
+
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+
     context = {
         'title': 'Каталог',
-        'object_list': Product.objects.all()
+        'page': page
     }
 
     return render(

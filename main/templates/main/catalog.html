@@ -4,23 +4,48 @@
 
 {% block page_content %}
   <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
-    
-    {% for object in object_list %}
-    <div class="col">
-      <div class="card h-100">
-        <img src="{{object.preview_image|product_image}}" class="card-img-top">
+    {% for object in page.object_list %}
+      <div class="col">
+        <div class="card h-100">
+          <img src="{{ object.preview_image|product_image }}" class="card-img-top" />
 
-        <div class="card-body">
-          <p class="card-text">{% if object.description %}{{object.description}}{% endif %}</p>
-        </div>
-        <div class="card-footer">
-          <h4 class="my-2 font-weight-normal text-center text-truncate px-2" title="{{object.name}}" data-bs-toggle="tooltip" data-bs-placement="bottom">{{object.name}}</h4>
-            <h5 class="card-title text-center">{{object.price}}&#x20bd;</h5>
+          <div class="card-body">
+            <p class="card-text">
+              {% if object.description %}{{ object.description }}{% endif %}
+            </p>
+          </div>
+          <div class="card-footer">
+            <h4 class="my-2 font-weight-normal text-center text-truncate px-2" title="{{ object.name }}" data-bs-toggle="tooltip" data-bs-placement="bottom">{{ object.name }}</h4>
+            <h5 class="card-title text-center">{{ object.price }}&#x20bd;</h5>
             <button type="button" class="w-100 btn btn-lg btn-success my-2">Купить</button>
+          </div>
         </div>
       </div>
-    </div>
     {% endfor %}
-   
   </div>
+{% if page.paginator.num_pages > 1 %}
+  <nav aria-label="Страницы с товарами" class="mt-4">
+    <ul class="pagination justify-content-center">
+
+        <li class="page-item {% if page.has_previous == False %}disabled{% endif %}">
+          <a class="page-link" href="{% if page.has_previous %}?page={{page.previous_page_number}}{% else %}#{% endif %}" aria-label="Предыдущая"><span aria-hidden="true">&laquo;</span></a>
+        </li>
+
+      {% for page_id in page.paginator.page_range %}
+        {% if page.number == page_id %}
+          <li class="page-item active" aria-current="page">
+            <span class="page-link">{{ page_id }}</span>
+          </li>
+        {% else %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{page_id}}">{{ page_id }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+      <li class="page-item {% if page.has_next == False %}disabled{% endif %}">
+          <a class="page-link" href="{% if page.has_next %}?page={{page.next_page_number}}{% else %}#{% endif %}" aria-label="Предыдущая"><span aria-hidden="true">&raquo;</span></a>
+        </li>
+    </ul>
+  </nav>
+{% endif %}
 {% endblock %}
