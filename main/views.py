@@ -12,7 +12,7 @@ from main.apps import MainConfig
 
 # Create your views here.
 def index(request: WSGIRequest):
-    pprint(Product.objects.all().order_by('-id')[:5][::-1])
+    # pprint(Product.objects.all().order_by('-id')[:5][::-1])
     return render(request, 'main/index.html', {'title': 'Главная'})
 
 
