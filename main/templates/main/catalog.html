@@ -1,26 +1,11 @@
 {% extends 'main/share/_base.html' %}
 {% load static %}
-{% load product_image_filter %}
+{% load inclusion_tags %}
 
 {% block page_content %}
-  <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
+  <div class="row row-cols-1 row-cols-md-4 g-4 mt-3" id="product_cards">
     {% for object in page.object_list %}
-      <div class="col">
-        <div class="card h-100">
-          <img src="{{ object.preview_image|product_image }}" class="card-img-top" />
-
-          <div class="card-body">
-            <p class="card-text">
-              {% if object.description %}{{ object.description }}{% endif %}
-            </p>
-          </div>
-          <div class="card-footer">
-            <h4 class="my-2 font-weight-normal text-center text-truncate px-2" title="{{ object.name }}" data-bs-toggle="tooltip" data-bs-placement="bottom">{{ object.name }}</h4>
-            <h5 class="card-title text-center">{{ object.price }}&#x20bd;</h5>
-            <button type="button" class="w-100 btn btn-lg btn-success my-2">Купить</button>
-          </div>
-        </div>
-      </div>
+      {% product_card object %}
     {% endfor %}
 
     <div class="col">
