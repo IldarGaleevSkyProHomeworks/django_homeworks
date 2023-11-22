@@ -1,11 +1,11 @@
 {% load product_image_filter %}
 <div class="col">
         <div class="card h-100">
-          <img src="{{ object.preview_image|product_image }}" class="card-img-top" />
+          <img src="{{ object.preview_image|product_image }}" class="card-img-top object-fit-{% if object.preview_image %}cover{% else %}none{% endif %}" style="height:200px;"/>
 
           <div class="card-body">
-            <p class="card-text">
-              {% if object.description %}{{ object.description }}{% endif %}
+            <p class="card-text overflow-y-auto " style="min-height:0;max-height:100px;">
+              {% if object.description %}{{ object.description }} {% else %} Нет описания {% endif %}
             </p>
           </div>
           <div class="card-footer">
