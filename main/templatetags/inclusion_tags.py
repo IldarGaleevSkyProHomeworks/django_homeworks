@@ -7,10 +7,10 @@ register = template.Library()
 def footer(obj=None):
     if not obj:
         obj = {
-            'preview_image': '${img_url}',
-            'name': '${product_name}',
-            'description': '${description}',
-            'price': '${price}'
+            'preview_image': '${data.image}',
+            'name': '${data.name}',
+            'description': '${data.description}',
+            'price': '${data.price}'
         }
 
     return {'object': obj}
