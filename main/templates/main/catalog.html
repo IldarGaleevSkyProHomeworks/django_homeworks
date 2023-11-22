@@ -59,9 +59,9 @@
                 {% include 'main/share/forms/_form_product.html' %}
                 <script>
                     async function createCard(e) {
-                      form = e.target
-                      sendBtn = form.querySelector('[type=submit]')
-                      spinner = sendBtn.querySelector('span[role=status]')
+                      let form = e.target
+                      let sendBtn = form.querySelector('[type=submit]')
+                      let spinner = sendBtn.querySelector('span[role=status]')
 
                       function waitBtn(state = true) {
                         spinner.hidden = !state
@@ -96,8 +96,12 @@
                     }
 
                     function add_card(data) {
-                      template = `{% product_card %}`
-                      document.querySelector('div#productCards>div').remove()
+                      let template = `{% product_card %}`
+                      let maxCardsCount = {{page.paginator.per_page}}
+                      let productCard = document.querySelector('div#productCards')
+                      if (productCard.children.length >= maxCardsCount+1){
+                        productCard.querySelector('div').remove()
+                      }
                       document.querySelector('#createProductBtn').insertAdjacentHTML('beforebegin', template)
                     }
 
