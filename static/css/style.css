@@ -18,7 +18,7 @@ backdrop-filter: blur(4px);
 div#logo{
     width: 100px;
     height: 100px;
-    background-image: url('/static/main/img/hnh_logo.png');
+    background-image: url('/static/img/hnh_logo.png');
     background-size: cover;
     opacity: 0.25;
 }
