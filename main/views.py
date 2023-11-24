@@ -3,7 +3,7 @@ from pprint import pprint
 from django.core.handlers.wsgi import WSGIRequest
 from django.core.paginator import Paginator
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.templatetags.static import static
 
 from main.forms import ProductForm
@@ -35,6 +35,23 @@ def catalog(request: WSGIRequest):
         'main/catalog.html',
         context=context
     )
+
+
+def product_info(request, product_id):
+    product = Product.objects.filter(id=product_id).first()
+
+    if product:
+        context = {
+            'title': product.name,
+            'product': product
+        }
+
+        return render(
+            request,
+            'main/product_info.html',
+            context=context
+        )
+    return redirect(catalog, permanent=True)
 
 
 in_memory_db = []
