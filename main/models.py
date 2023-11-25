@@ -2,6 +2,8 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 
+from main.utils.HashStorage import product_preview_images, HashStorage
+
 # Create your models here.
 
 nullable = {
@@ -30,7 +32,8 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name='цена', default=0.0)
     create_date = models.DateTimeField(verbose_name='дата создания', default=timezone.now)
     modify_date = models.DateTimeField(verbose_name='дата изменения', default=timezone.now)
-    preview_image = models.ImageField(upload_to='product_preview_images/', verbose_name='изображение', **nullable)
+    preview_image = models.ImageField(upload_to=product_preview_images, storage=HashStorage(),
+                                      verbose_name='изображение', **nullable)  # 'product_preview_images/'
 
     def __str__(self):
         return f'{self.name}: {self.price:.3}'
