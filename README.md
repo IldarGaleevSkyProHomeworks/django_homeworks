@@ -42,7 +42,29 @@ python .\manage.py mainfill
 ``` PowerShell
 python .\manage.py runserver
 ```
+## Команды
 
+### mainfill
+
+Заполняет таблицу с контактами и товарами
+
+```PowerShell
+python .\manage.py mainfill
+```
+
+### generatearticles
+
+Генерирует статьи для блога
+
+#### Аргументы
+
+- `count` - позиционный аргумент. Указывает сколько статей сгенерировать. По-умолчанию: 1
+- `-p`, `--publish` - опубликовать сгенерированные статьи
+
+```PowerShell
+# создать и опубликовать 15 статей
+python .\manage.py generatearticles 15 -p
+```
 
 ## Переменные окружения
 
