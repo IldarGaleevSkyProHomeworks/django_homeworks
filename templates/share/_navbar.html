@@ -14,6 +14,12 @@
                     <a class="nav-link {% if url_name == 'store_app:catalog' %}active{% endif %}"
                        href="{% url 'store_app:catalog' %}">Каталог</a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {% if url_name == 'blog_app:articles' %}active{% endif %}"
+                       href="{% url 'blog_app:articles' %}">Статьи</a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link {% if url_name == 'store_app:contacts' %}active{% endif %}"
                        href="{% url 'store_app:contacts' %}">Контакты</a>

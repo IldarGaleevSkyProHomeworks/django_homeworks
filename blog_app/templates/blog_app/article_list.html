@@ -1,0 +1,28 @@
+{% extends 'share/_base.html' %}
+{% load static %}
+{% block page_content %}
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+        {% for object in object_list %}
+            <div class="col">
+                <div class="card mb-3 h-100" style="max-width: 540px;">
+                    {% if object.preview_image %}
+                        <img src="{{ object.preview_image.url }}" class="card-img-top object-fit-cover" alt="...">
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ object.title }}</h5>
+                        <p class="card-text">{{ object.content_text|truncatechars:250 }}</p>
+
+                        <p class="card-text text-end">
+                            <small class="text-body-secondary ">{{ object.create_date }}</small>
+                        </p>
+                    </div>
+
+                    <div class="card-footer">
+                        <small class="text-body-secondary">{{ object.view_count }} просмотров</small>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
