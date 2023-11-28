@@ -1,5 +1,7 @@
 from django.db.models import Q
-from django.views.generic import ListView, DetailView
+from django.shortcuts import redirect
+from django.urls import reverse
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from blog_app.models import Article
 
@@ -34,3 +36,23 @@ class ArticleDetailView(DetailView):
         self.object.view_count += 1
         self.object.save()
         return self.object
+
+
+class ArticleCreateView(CreateView):
+    model = Article
+    fields = ('title', 'content_text', 'preview_image', 'is_published')
+
+    def form_valid(self, form):
+        if form.is_valid():
+            new_obj = form.save()
+            return redirect(reverse('blog_app:article_detail', kwargs={'pk': new_obj.id}))
+
+
+class ArticleUpdateView(UpdateView):
+    model = Article
+    fields = ('title', 'content_text', 'preview_image', 'is_published')
+
+    def form_valid(self, form):
+        if form.is_valid():
+            new_obj = form.save()
+            return redirect(reverse('blog_app:article_detail', kwargs={'pk': new_obj.id}))

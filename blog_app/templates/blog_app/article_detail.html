@@ -1,6 +1,9 @@
 {% extends 'share/_base.html' %}
 
 {% block page_content %}
+    <div class="mt-4 btn-group" role="group">
+        <a href="{% url 'blog_app:article_update' object.id %}" class="btn btn-primary">Править публикацию</a>
+    </div>
     <article class="pt-3">
         <h1 class="">{{ object.title }}</h1>
 

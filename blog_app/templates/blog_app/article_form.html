@@ -1,0 +1,33 @@
+{% extends 'share/_base.html' %}
+{% load widget_tweaks %}
+
+{% block page_content %}
+    <form class="mt-5" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-floating mb-3">
+            {% render_field form.title class='form-control' placeholder=form.title.label %}
+            <label for="{{ form.title.auto_id }}">{{ form.title.label }}</label>
+        </div>
+        <div class="input-group mb-3">
+            <label for="{{ form.preview_image.auto_id }}"
+                   class="input-group-text">{{ form.preview_image.label }}</label>
+            {% render_field form.preview_image class='form-control' %}
+        </div>
+        <div class="form-floating mb-3">
+            {% render_field form.content_text class='form-control h-100' placeholder=form.title.label rows=20 %}
+            <label for="{{ form.content_text.auto_id }}">{{ form.content_text.label }}</label>
+        </div>
+        <div class="form-check form-switch mb-3">
+            {% render_field form.is_published class='form-check-input' %}
+            <label for="{{ form.is_published.auto_id }}"
+                   class="form-check-label">{{ form.is_published.label }}</label>
+        </div>
+        <div class="mb-3 btn-group" role="group">
+            {% if object %}
+                <a href="{% url 'blog_app:article_detail' object.id %}" class="btn btn-secondary">Отмена</a>
+            {% endif %}
+            <button class="btn btn-success" type="submit">Сохранить</button>
+        </div>
+
+    </form>
+{% endblock %}

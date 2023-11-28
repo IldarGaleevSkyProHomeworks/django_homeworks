@@ -1,6 +1,10 @@
 {% extends 'share/_base.html' %}
 {% load static %}
 {% block page_content %}
+    <div class="mt-4 btn-group" role="group">
+        <a href="{% url 'blog_app:article_create' %}" class="btn btn-primary">Добавить публикацию</a>
+    </div>
+
     <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
         {% for object in object_list %}
             <div class="col">
