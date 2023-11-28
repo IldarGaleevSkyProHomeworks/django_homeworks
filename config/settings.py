@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     "django_rename_app",
     "widget_tweaks",
 
-    "store_app"
+    "store_app",
+    "blog_app"
 ]
 
 MIDDLEWARE = [
