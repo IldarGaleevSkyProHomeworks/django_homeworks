@@ -21,30 +21,28 @@
     </div>
 </div>
 {% if page.paginator.num_pages > 1 %}
-<nav aria-label="Страницы с товарами" class="mt-4">
+  <nav aria-label="Страницы с товарами" class="mt-4">
     <ul class="pagination justify-content-center">
-        <li class="page-item {% if page.has_previous == False %}{% endif %}">
-            <a class="page-link" href="{% if page.has_previous %}{{ page.previous_page_number }}{% endif %}"
-               aria-label="Предыдущая"><span aria-hidden="true">&laquo;</span></a>
+        <li class="page-item {% if page.has_previous == False %}disabled{% endif %}">
+          <a class="page-link" href="{% if page.has_previous %}?page={{page.previous_page_number}}{% else %}#{% endif %}" aria-label="Предыдущая"><span aria-hidden="true">&laquo;</span></a>
         </li>
 
-        {% for page_id in page.paginator.page_range %}
+      {% for page_id in page.paginator.page_range %}
         {% if page.number == page_id %}
-        <li class="page-item active" aria-current="page">
+          <li class="page-item active" aria-current="page">
             <span class="page-link">{{ page_id }}</span>
-        </li>
+          </li>
         {% else %}
-        <li class="page-item">
-            <a class="page-link" href="?page={{ page_id }}">{{ page_id }}</a>
-        </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{page_id}}">{{ page_id }}</a>
+          </li>
         {% endif %}
-        {% endfor %}
-        <li class="page-item {% if page.has_next == False %}{% endif %}">
-            <a class="page-link" href="{% if page.has_next %}{{ page.next_page_number }}{% endif %}"
-               aria-label="Предыдущая"><span aria-hidden="true">&raquo;</span></a>
+      {% endfor %}
+      <li class="page-item {% if page.has_next == False %}disabled{% endif %}">
+          <a class="page-link" href="{% if page.has_next %}?page={{page.next_page_number}}{% else %}#{% endif %}" aria-label="Предыдущая"><span aria-hidden="true">&raquo;</span></a>
         </li>
     </ul>
-</nav>
+  </nav>
 {% endif %}
 
 <div class="modal fade" id="createProductForm" tabindex="-1" aria-labelledby="createProductFormLabel"

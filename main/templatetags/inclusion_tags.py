@@ -1,4 +1,5 @@
 from django import template
+from django.urls import reverse
 
 register = template.Library()
 
@@ -10,7 +11,8 @@ def footer(obj=None):
             'preview_image': '${data.image}',
             'name': '${data.name}',
             'description': '${data.description}',
-            'price': '${data.price}'
+            'price': '${data.price}',
+            'get_absolute_url': f'{reverse("catalog")}${{data.id}}'
         }
 
     return {'object': obj}
