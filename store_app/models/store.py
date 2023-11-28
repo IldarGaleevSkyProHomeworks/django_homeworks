@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from .const import NULLABLE
-from main.utils.HashStorage import product_preview_images, HashStorage
+from store_app.utils.HashStorage import product_preview_images, HashStorage
 
 
 class Category(models.Model):

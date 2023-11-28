@@ -3,7 +3,7 @@ import random
 from django.core.management import BaseCommand
 from django.core.management import call_command
 
-from main.models import Category, Product, Contact
+from store_app.models import Category, Product, Contact
 
 
 class Command(BaseCommand):

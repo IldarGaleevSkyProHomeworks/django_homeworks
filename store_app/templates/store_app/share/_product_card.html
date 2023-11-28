@@ -10,7 +10,8 @@
             <p class="card-text overflow-y-auto " style="min-height:0;max-height:100px;">
                 {% if object.description %}{{ object.description }} {% else %} Нет описания {% endif %}
             </p>
-            <a href="{{ object.get_absolute_url }}">Детали...</a>
+            {# This template is also used to generate template strings for JS. ${data.id} will be replaced with a new product id in JS #}
+            <a href="{% if object.id %}{% url 'store_app:product' object.id %}{% else %}{% url 'store_app:catalog' %}${data.id}/{% endif %}">Детали...</a>
         </div>
         <div class="card-footer">
             <h4 class="my-2 font-weight-normal text-center text-truncate px-2" title="{{ object.name }}"

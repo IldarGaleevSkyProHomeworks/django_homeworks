@@ -3,9 +3,9 @@ import os
 from django.apps import AppConfig
 
 
-class MainConfig(AppConfig):
+class StoreAppConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "main"
+    name = "store_app"
     verbose_name = 'Магазин'
 
-    catalog_per_page = os.getenv('MAIN_CATALOG_PER_PAGE', 15)
+    catalog_per_page = os.getenv('STORE_CATALOG_PER_PAGE', 15)

@@ -6,20 +6,20 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.templatetags.static import static
 
-from main.forms import ProductForm
-from main.models import Product, Contact
-from main.apps import MainConfig
+from store_app.forms import ProductForm
+from store_app.models import Product, Contact
+from store_app.apps import StoreAppConfig
 
 
 # Create your views here.
 def index(request: WSGIRequest):
     # pprint(Product.objects.all().order_by('-id')[:5][::-1])
-    return render(request, 'main/index.html', {'title': 'Главная'})
+    return render(request, 'store_app/index.html', {'title': 'Главная'})
 
 
 def catalog(request: WSGIRequest):
     products = Product.objects.order_by('id').all()
-    paginator = Paginator(products, MainConfig.catalog_per_page)
+    paginator = Paginator(products, StoreAppConfig.catalog_per_page)
 
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -32,13 +32,13 @@ def catalog(request: WSGIRequest):
 
     return render(
         request,
-        'main/catalog.html',
+        'store_app/catalog.html',
         context=context
     )
 
 
-def product_info(request, product_id):
-    product = Product.objects.filter(id=product_id).first()
+def product_info(request, pk):
+    product = Product.objects.filter(id=pk).first()
 
     if product:
         context = {
@@ -48,7 +48,7 @@ def product_info(request, product_id):
 
         return render(
             request,
-            'main/product_info.html',
+            'store_app/product_info.html',
             context=context
         )
     return redirect(catalog, permanent=True)
@@ -63,7 +63,7 @@ def contacts(request: WSGIRequest):
 
     return render(
         request,
-        'main/contacts.html',
+        'store_app/contacts.html',
         {
             'title': 'Контакты',
             'contacts': contact_list

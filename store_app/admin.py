@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from main.models import Category, Product, Contact
+from store_app.models import Category, Product, Contact
 
 
 # Register your models here.

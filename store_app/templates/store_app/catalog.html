@@ -1,4 +1,4 @@
-{% extends 'main/share/_base.html' %}
+{% extends 'store_app/share/_base.html' %}
 {% load static %}
 {% load inclusion_tags %}
 
@@ -54,7 +54,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                {% include 'main/share/forms/_form_product.html' %}
+                {% include 'store_app/share/forms/_form_product.html' %}
                 <script>
                     async function createCard(e) {
                       let form = e.target
@@ -73,7 +73,7 @@
                       e.preventDefault()
 
                       waitBtn()
-                      let response = await fetch('{% url "create_product" %}', {
+                      let response = await fetch('{% url "store_app:create_product" %}', {
                         method: 'POST',
                         body: new FormData(form)
                       })

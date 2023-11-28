@@ -1,5 +1,5 @@
 {% load widget_tweaks %}
-<form action="{% url 'create_product' %}" method="post" enctype="multipart/form-data" id="createProductForm">
+<form action="{% url 'store_app:create_product' %}" method="post" enctype="multipart/form-data" id="createProductForm">
     {% csrf_token %}
 
     <div class="form-floating mb-3">
