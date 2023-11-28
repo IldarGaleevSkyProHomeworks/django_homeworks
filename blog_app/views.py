@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import redirect
-from django.urls import reverse
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from blog_app.models import Article
 
@@ -56,3 +56,13 @@ class ArticleUpdateView(UpdateView):
         if form.is_valid():
             new_obj = form.save()
             return redirect(reverse('blog_app:article_detail', kwargs={'pk': new_obj.id}))
+
+
+class ArticleDeleteView(DeleteView):
+    model = Article
+    success_url = reverse_lazy('blog_app:articles')
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['title'] = f'Удаление "{self.object.title}"'
+        return ctx
