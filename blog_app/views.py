@@ -13,6 +13,12 @@ class ArticleListView(ListView):
 
         return qs
 
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['title'] = 'Новые публикации'
+
+        return ctx
+
 
 class ArticleDetailView(DetailView):
     model = Article
