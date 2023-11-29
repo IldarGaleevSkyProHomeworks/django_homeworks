@@ -1,10 +1,10 @@
-from pprint import pprint
-
 from django.core.handlers.wsgi import WSGIRequest
 from django.core.paginator import Paginator
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.shortcuts import render, redirect
 from django.templatetags.static import static
+from django.urls import reverse
+from django.views.generic import DetailView
 
 from store_app.forms import ProductForm
 from store_app.models import Product, Contact
@@ -37,21 +37,20 @@ def catalog(request: WSGIRequest):
     )
 
 
-def product_info(request, pk):
-    product = Product.objects.filter(id=pk).first()
+class ProductDetailView(DetailView):
+    model = Product
 
-    if product:
-        context = {
-            'title': product.name,
-            'product': product
-        }
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['title'] = self.object.name
+        return ctx
 
-        return render(
-            request,
-            'store_app/product_info.html',
-            context=context
-        )
-    return redirect(catalog, permanent=True)
+    def get(self, request, *args, **kwargs):
+        try:
+            obj = super().get(request, *args, **kwargs)
+            return obj
+        except Http404:
+            return redirect(reverse('store_app:catalog'))
 
 
 def contacts(request: WSGIRequest):
