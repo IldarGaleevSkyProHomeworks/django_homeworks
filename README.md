@@ -1,4 +1,4 @@
-# Домашняя работа 6.4
+# Домашняя работа 6.5
 
 
 1. Установите зависимости
@@ -38,10 +38,17 @@ python .\manage.py createsuperuser
 python .\manage.py mainfill
 ```
 
-6. Запустите сервер
+6. Задайте необходимые [переменные окружения](#переменные-окружения)
+
+7. Запустите сервер
 ``` PowerShell
 python .\manage.py runserver
 ```
+8. Запустите менеджер фоновых задач для отправки e-mail сообщений
+``` PowerShell
+python .\manage.py process_tasks
+```
+
 ## Команды
 
 ### mainfill
@@ -66,24 +73,82 @@ python .\manage.py mainfill
 python .\manage.py generatearticles 15 -p
 ```
 
+### process_tasks
+
+Запуск менеджера фоновых задач для отправки сообщений на почту
+
+```PowerShell
+python .\manage.py process_tasks
+```
+
 ## Переменные окружения
+
+> [!TIP]
+> 
+> Поддерживается файл `.env` для назначения переменных. [Шаблон файла](.env.template)
+> 
 
 ### Postgres
 
-| Переменная  | Файл настроек                            | Назначение                          |
-|-------------|------------------------------------------|-------------------------------------|
-| PG_NAME     | [config/settings.py](config/settings.py) | Имя базы данных                     |
-| PG_USER     | [config/settings.py](config/settings.py) | Имя пользователя для подключения    |
-| PG_PASSWORD | [config/settings.py](config/settings.py) | Пароль пользователя для подключения |
-| PG_HOST     | [config/settings.py](config/settings.py) | Имя хоста с сервером                |
-| PG_PORT     | [config/settings.py](config/settings.py) | Порт сервера                        |
+| Переменная    | Файл настроек                            | Назначение                          |
+|---------------|------------------------------------------|-------------------------------------|
+| `PG_NAME`     | [config/settings.py](config/settings.py) | Имя базы данных                     |
+| `PG_USER`     | [config/settings.py](config/settings.py) | Имя пользователя для подключения    |
+| `PG_PASSWORD` | [config/settings.py](config/settings.py) | Пароль пользователя для подключения |
+| `PG_HOST`     | [config/settings.py](config/settings.py) | Имя хоста с сервером                |
+| `PG_PORT`     | [config/settings.py](config/settings.py) | Порт сервера                        |
 
 
 ### Страница товаров
 
-| Переменная                                           | Файл настроек                          | Назначение                     |
-|------------------------------------------------------|----------------------------------------|--------------------------------|
-| STORE_CATALOG_PER_PAGE <sup>[1](#old_per_page)</sup> | [store_app/apps.py](store_app/apps.py) | Количество товаров на странице |
+| Переменная                                             | Файл настроек                          | Назначение                     |
+|--------------------------------------------------------|----------------------------------------|--------------------------------|
+| `STORE_CATALOG_PER_PAGE` <sup>[1](#old_per_page)</sup> | [store_app/apps.py](store_app/apps.py) | Количество товаров на странице |
+
+
+### Страница публикаций
+
+| Переменная                     | Файл настроек                        | Назначение                                                                                                                |
+|--------------------------------|--------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| `ARTICLES_PER_PAGE`            | [blog_app/apps.py](blog_app/apps.py) | Количество публикаций на странице                                                                                         |
+| `ARTICLE_VIEW_COUNTS_CONGRATS` | [blog_app/apps.py](blog_app/apps.py) | Количество просмотров публикации, при котором отсылаестя сообщение. Переменная содержит список чисел, разделенных запятой |
+
+
+### Background worker
+
+| Переменная            | Файл настроек                            | Назначение                                      |
+|-----------------------|------------------------------------------|-------------------------------------------------|
+| `BGTASK_MAX_ATTEMPTS` | [config/settings.py](config/settings.py) | Количество попыток повторного выполнения задачи |
+
+
+## Логирование
+
+Для настройки логирования укажите путь к json файлу конфигурации в переменной окружения `LOGGING_CONFIG_FILE`.
+
+Пример файла конфигурации для вывода отладочных сообщений в консоль от менеджера фоновых задач:
+
+```json
+{
+  "version": 1,
+  "disable_existing_loggers": false,
+  "handlers": {
+    "console": {
+      "class": "logging.StreamHandler"
+    }
+  },
+  "root": {
+    "handlers": [
+      "console"
+    ],
+    "level": "WARNING"
+  },
+  "loggers": {
+    "tasks.send_mail": {
+      "level": "DEBUG"
+    }
+  }
+}
+```
 
 ---
 
