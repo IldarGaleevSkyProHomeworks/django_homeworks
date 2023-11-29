@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
+import tasks.send_mail
 from blog_app.apps import BlogAppConfig
 from blog_app.models import Article
 
@@ -37,6 +38,8 @@ class ArticleDetailView(DetailView):
         self.object = super().get_object(queryset)
         self.object.view_count += 1
         self.object.save()
+        if self.object.view_count in BlogAppConfig.article_view_counts_congrats:
+            tasks.send_mail.task_article_congrats(self.object.id, self.object.view_count)
         return self.object
 
 

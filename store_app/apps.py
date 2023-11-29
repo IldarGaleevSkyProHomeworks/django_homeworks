@@ -1,5 +1,3 @@
-import os
-
 from django.apps import AppConfig
 from config.settings import env
 
