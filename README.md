@@ -1,5 +1,9 @@
 # Домашняя работа 6.5
 
+<div align="center">
+<a href="https://wakatime.com/@IldarGaleev/projects/fereckcopm"><img src="https://wakatime.com/badge/user/45799db8-b1f8-4627-9264-2c8d4c352567/project/018beb28-96ef-4887-b044-66638d506f2f.svg" alt="wakatime"></a>
+<img src="https://img.shields.io/github/last-commit/IldarGaleevSkyProHomeworks/django_homeworks.svg"/>
+</div>
 
 1. Установите зависимости
 
