@@ -3,11 +3,13 @@ from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
+from blog_app.apps import BlogAppConfig
 from blog_app.models import Article
 
 
 class ArticleListView(ListView):
     model = Article
+    paginate_by = BlogAppConfig.articles_per_page
 
     def get_queryset(self):
         qs = super().get_queryset()
