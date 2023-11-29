@@ -1,6 +1,7 @@
 import os
 
 from django.apps import AppConfig
+from config.settings import env
 
 
 class StoreAppConfig(AppConfig):
@@ -8,4 +9,4 @@ class StoreAppConfig(AppConfig):
     name = "store_app"
     verbose_name = 'Магазин'
 
-    catalog_per_page = os.getenv('STORE_CATALOG_PER_PAGE', 15)
+    catalog_per_page = env.int('STORE_CATALOG_PER_PAGE', 15)
