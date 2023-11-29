@@ -3,17 +3,17 @@
 
 {% block page_content %}
 
-    {% for contact in contacts %}
+    {% for object in object_list %}
         <div class="card my-3">
-            <div class="card-header">{{ contact.name }}</div>
+            <div class="card-header">{{ object.name }}</div>
             <address>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                        {% for phone in contact.phones %}
+                        {% for phone in object.phones %}
                             <a class="phone" href="tel:{{ phone }}">{{ phone }}</a>
                         {% endfor %}
                     </li>
-                    <li class="list-group-item">{{ contact.address }}</li>
+                    <li class="list-group-item">{{ object.address }}</li>
                 </ul>
             </address>
         </div>

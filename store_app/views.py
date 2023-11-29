@@ -4,7 +4,7 @@ from django.http import JsonResponse, Http404
 from django.shortcuts import render, redirect
 from django.templatetags.static import static
 from django.urls import reverse
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 
 from store_app.forms import ProductForm
 from store_app.models import Product, Contact
@@ -53,24 +53,19 @@ class ProductDetailView(DetailView):
             return redirect(reverse('store_app:catalog'))
 
 
-def contacts(request: WSGIRequest):
-    contact_list = [{
-        'name': contact.name,
-        'phones': [phone.strip() for phone in contact.phones.split(',')],
-        'address': contact.address
-    } for contact in Contact.objects.all()]
+class ContactListView(ListView):
+    model = Contact
 
-    return render(
-        request,
-        'store_app/contacts.html',
-        {
-            'title': 'Контакты',
-            'contacts': contact_list
-        })
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['object_list'] = [{
+            'name': contact.name,
+            'phones': [phone.strip() for phone in contact.phones.split(',')],
+            'address': contact.address
+        } for contact in ctx['object_list']]
 
-
-def api(request: WSGIRequest):
-    return JsonResponse({'status': 'ok'})
+        ctx['title'] = 'Контакты'
+        return ctx
 
 
 def create_product(request: WSGIRequest):
