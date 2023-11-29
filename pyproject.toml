@@ -13,6 +13,7 @@ psycopg2 = "^2.9.9"
 django-widget-tweaks = "^1.5.0"
 django-rename-app = "^0.1.7"
 python-lorem = "^1.3.0.post1"
+pytils = "^0.4.1"
 
 
 [tool.poetry.group.dev.dependencies]

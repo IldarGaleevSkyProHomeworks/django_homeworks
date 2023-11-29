@@ -47,7 +47,7 @@ class ArticleCreateView(CreateView):
     def form_valid(self, form):
         if form.is_valid():
             new_obj = form.save()
-            return redirect(reverse('blog_app:article_detail', kwargs={'pk': new_obj.id}))
+            return redirect(reverse('blog_app:article_detail', kwargs={'slug': new_obj.slug}))
 
 
 class ArticleUpdateView(UpdateView):
@@ -57,7 +57,7 @@ class ArticleUpdateView(UpdateView):
     def form_valid(self, form):
         if form.is_valid():
             new_obj = form.save()
-            return redirect(reverse('blog_app:article_detail', kwargs={'pk': new_obj.id}))
+            return redirect(reverse('blog_app:article_detail', kwargs={'slug': new_obj.slug}))
 
 
 class ArticleDeleteView(DeleteView):

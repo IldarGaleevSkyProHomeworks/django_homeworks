@@ -2,6 +2,7 @@ from datetime import timedelta
 import random
 
 import lorem
+import pytils.translit
 from django.core.management import BaseCommand
 from django.utils import timezone
 
@@ -15,9 +16,11 @@ class Command(BaseCommand):
         count = options['count']
         articles = []
         for _ in range(count):
+            new_title = lorem.get_sentence()
             articles.append(Article(
-                title=lorem.get_sentence(),
-                content_text=lorem.get_paragraph(),
+                title=new_title,
+                slug=pytils.translit.slugify(new_title),
+                content_text=lorem.get_paragraph(3),
                 create_date=timezone.now() - timedelta(hours=random.randint(0, 48)),
                 is_published=options['publish'],
             ))

@@ -1,3 +1,4 @@
+import pytils.translit
 from django.db import models
 from django.utils import timezone
 
@@ -17,6 +18,11 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        max_len = self._meta.get_field('slug').max_length
+        self.slug = pytils.translit.slugify(self.title)[:max_len]
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Публикация'

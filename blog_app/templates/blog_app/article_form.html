@@ -24,7 +24,7 @@
         </div>
         <div class="mb-3 btn-group" role="group">
             {% if object %}
-                <a href="{% url 'blog_app:article_detail' object.id %}" class="btn btn-secondary">Отмена</a>
+                <a href="{% url 'blog_app:article_detail' object.slug %}" class="btn btn-secondary">Отмена</a>
             {% endif %}
             <button class="btn btn-success" type="submit">Сохранить</button>
         </div>

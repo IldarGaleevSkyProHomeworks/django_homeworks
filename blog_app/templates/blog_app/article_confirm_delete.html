@@ -5,7 +5,7 @@
     {% csrf_token %}
     <p>Вы действительно хотите удалить статью <b>{{ object.title }}</b>?</p>
     <div class="btn-group justify-content-center w-100" role="group">
-        <a href="{% url 'blog_app:article_detail' object.id %}" class="btn btn-success">Отмена</a>
+        <a href="{% url 'blog_app:article_detail' object.slug %}" class="btn btn-success">Отмена</a>
         <button class="btn btn-danger" type="submit">Удалить</button>
     </div>
     </form>
