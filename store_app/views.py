@@ -1,5 +1,4 @@
 from django.core.handlers.wsgi import WSGIRequest
-from django.core.paginator import Paginator
 from django.http import JsonResponse, Http404
 from django.shortcuts import render, redirect
 from django.templatetags.static import static
@@ -11,30 +10,19 @@ from store_app.models import Product, Contact
 from store_app.apps import StoreAppConfig
 
 
-# Create your views here.
 def index(request: WSGIRequest):
-    # pprint(Product.objects.all().order_by('-id')[:5][::-1])
     return render(request, 'store_app/index.html', {'title': 'Главная'})
 
 
-def catalog(request: WSGIRequest):
-    products = Product.objects.order_by('id').all()
-    paginator = Paginator(products, StoreAppConfig.catalog_per_page)
+class ProductListView(ListView):
+    model = Product
+    paginate_by = StoreAppConfig.catalog_per_page
 
-    page_number = request.GET.get('page')
-    page = paginator.get_page(page_number)
-
-    context = {
-        'title': 'Каталог',
-        'page': page,
-        'form': ProductForm()
-    }
-
-    return render(
-        request,
-        'store_app/catalog.html',
-        context=context
-    )
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['form'] = ProductForm()
+        ctx['title'] = 'Каталог'
+        return ctx
 
 
 class ProductDetailView(DetailView):

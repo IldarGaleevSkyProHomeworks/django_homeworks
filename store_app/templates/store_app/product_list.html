@@ -4,7 +4,7 @@
 
 {% block page_content %}
 <div class="row row-cols-1 row-cols-md-4 g-4 mt-3" id="productCards">
-    {% for object in page.object_list %}
+    {% for object in object_list %}
     {% product_card object %}
     {% endfor %}
 
@@ -20,15 +20,15 @@
         </div>
     </div>
 </div>
-{% if page.paginator.num_pages > 1 %}
+{% if is_paginated %}
   <nav aria-label="Страницы с товарами" class="mt-4">
     <ul class="pagination justify-content-center">
-        <li class="page-item {% if page.has_previous == False %}disabled{% endif %}">
-          <a class="page-link" href="{% if page.has_previous %}?page={{page.previous_page_number}}{% else %}#{% endif %}" aria-label="Предыдущая"><span aria-hidden="true">&laquo;</span></a>
+        <li class="page-item {% if page_obj.has_previous == False %}disabled{% endif %}">
+          <a class="page-link" href="{% if page_obj.has_previous %}?page={{page_obj.previous_page_number}}{% else %}#{% endif %}" aria-label="Предыдущая"><span aria-hidden="true">&laquo;</span></a>
         </li>
 
-      {% for page_id in page.paginator.page_range %}
-        {% if page.number == page_id %}
+      {% for page_id in page_obj.paginator.page_range %}
+        {% if page_obj.number == page_id %}
           <li class="page-item active" aria-current="page">
             <span class="page-link">{{ page_id }}</span>
           </li>
@@ -38,8 +38,8 @@
           </li>
         {% endif %}
       {% endfor %}
-      <li class="page-item {% if page.has_next == False %}disabled{% endif %}">
-          <a class="page-link" href="{% if page.has_next %}?page={{page.next_page_number}}{% else %}#{% endif %}" aria-label="Предыдущая"><span aria-hidden="true">&raquo;</span></a>
+      <li class="page-item {% if page_obj.has_next == False %}disabled{% endif %}">
+          <a class="page-link" href="{% if page_obj.has_next %}?page={{page_obj.next_page_number}}{% else %}#{% endif %}" aria-label="Предыдущая"><span aria-hidden="true">&raquo;</span></a>
         </li>
     </ul>
   </nav>
@@ -95,7 +95,7 @@
 
                     function add_card(data) {
                       let template = `{% product_card %}`
-                      let maxCardsCount = {{page.paginator.per_page}}
+                      let maxCardsCount = {{page_obj.paginator.per_page}}
                       let productCard = document.querySelector('div#productCards')
                       if (productCard.children.length >= maxCardsCount+1){
                         productCard.querySelector('div').remove()
