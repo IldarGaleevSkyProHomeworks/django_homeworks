@@ -1,0 +1,23 @@
+{% load product_image_filter %}
+<div class="col">
+    <div class="card h-100">
+
+        <img src="{{ object.preview_image|product_image }}"
+             class="card-img-top object-fit-{% if object.preview_image %}cover{% else %}none{% endif %}"
+             style="height:200px;" alt="{{ object.name }}"/>
+
+        <div class="card-body">
+            <p class="card-text overflow-y-auto " style="min-height:0;max-height:100px;">
+                {% if object.description %}{{ object.description }} {% else %} Нет описания {% endif %}
+            </p>
+            {# This template is also used to generate template strings for JS. ${data.id} will be replaced with a new product id in JS #}
+            <a href="{% if object.id %}{% url 'store_app:product' object.id %}{% else %}{% url 'store_app:catalog' %}${data.id}/{% endif %}">Детали...</a>
+        </div>
+        <div class="card-footer">
+            <h4 class="my-2 font-weight-normal text-center text-truncate px-2" title="{{ object.name }}"
+                data-bs-toggle="tooltip" data-bs-placement="bottom">{{ object.name }}</h4>
+            <h5 class="card-title text-center">{{ object.price }}&#x20bd;</h5>
+            <button type="button" class="w-100 btn btn-lg btn-success my-2">В корзину</button>
+        </div>
+    </div>
+</div>

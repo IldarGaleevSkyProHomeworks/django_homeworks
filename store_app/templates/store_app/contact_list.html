@@ -1,0 +1,22 @@
+{% extends 'share/_base.html' %}
+{% load static %}
+
+{% block page_content %}
+
+    {% for object in object_list %}
+        <div class="card my-3">
+            <div class="card-header">{{ object.name }}</div>
+            <address>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        {% for phone in object.phones %}
+                            <a class="phone" href="tel:{{ phone }}">{{ phone }}</a>
+                        {% endfor %}
+                    </li>
+                    <li class="list-group-item">{{ object.address }}</li>
+                </ul>
+            </address>
+        </div>
+    {% endfor %}
+
+{% endblock %}

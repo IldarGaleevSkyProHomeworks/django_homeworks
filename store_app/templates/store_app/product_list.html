@@ -1,0 +1,114 @@
+{% extends 'share/_base.html' %}
+{% load static %}
+{% load inclusion_tags %}
+
+{% block page_content %}
+<div class="row row-cols-1 row-cols-md-4 g-4 mt-3" id="productCards">
+    {% for object in object_list %}
+    {% product_card object %}
+    {% endfor %}
+
+    <div class="col" id="createProductBtn">
+        <div class="card h-100">
+            <button class="btn w-100 h-100" type="button" data-bs-target="#createProductForm" data-bs-toggle="modal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-plus-lg"
+                     viewBox="0 0 16 16" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Добавить товар">
+                    <path fill-rule="evenodd"
+                          d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+{% if is_paginated %}
+  <nav aria-label="Страницы с товарами" class="mt-4">
+    <ul class="pagination justify-content-center">
+        <li class="page-item {% if page_obj.has_previous == False %}disabled{% endif %}">
+          <a class="page-link" href="{% if page_obj.has_previous %}?page={{page_obj.previous_page_number}}{% else %}#{% endif %}" aria-label="Предыдущая"><span aria-hidden="true">&laquo;</span></a>
+        </li>
+
+      {% for page_id in page_obj.paginator.page_range %}
+        {% if page_obj.number == page_id %}
+          <li class="page-item active" aria-current="page">
+            <span class="page-link">{{ page_id }}</span>
+          </li>
+        {% else %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{page_id}}">{{ page_id }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+      <li class="page-item {% if page_obj.has_next == False %}disabled{% endif %}">
+          <a class="page-link" href="{% if page_obj.has_next %}?page={{page_obj.next_page_number}}{% else %}#{% endif %}" aria-label="Предыдущая"><span aria-hidden="true">&raquo;</span></a>
+        </li>
+    </ul>
+  </nav>
+{% endif %}
+
+<div class="modal fade" id="createProductForm" tabindex="-1" aria-labelledby="createProductFormLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="createProductFormLabel">Добавить новый товар</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% include 'store_app/share/forms/_form_product.html' %}
+                <script>
+                    async function createCard(e) {
+                      let form = e.target
+                      let sendBtn = form.querySelector('[type=submit]')
+                      let spinner = sendBtn.querySelector('span[role=status]')
+
+                      function waitBtn(state = true) {
+                        spinner.hidden = !state
+                        if (state) {
+                          sendBtn.classList.add('disabled')
+                        } else {
+                          sendBtn.classList.remove('disabled')
+                        }
+                      }
+
+                      e.preventDefault()
+
+                      waitBtn()
+                      let response = await fetch('{% url "store_app:create_product" %}', {
+                        method: 'POST',
+                        body: new FormData(form)
+                      })
+
+                      try {
+                        let result = await response.json()
+                        if (result.status === 'ok') {
+                          add_card(result)
+                          form.reset()
+                          waitBtn(false)
+                          return
+                        }
+                      } catch (err) {
+                        console.log(err)
+                      }
+                      waitBtn(false)
+                      alert('При обработке запроса произошла ошибка')
+                    }
+
+                    function add_card(data) {
+                      let template = `{% product_card %}`
+                      let maxCardsCount = {{page_obj.paginator.per_page}}
+                      let productCard = document.querySelector('div#productCards')
+                      if (productCard.children.length >= maxCardsCount+1){
+                        productCard.querySelector('div').remove()
+                      }
+                      document.querySelector('#createProductBtn').insertAdjacentHTML('beforebegin', template)
+                    }
+
+                    document.addEventListener('DOMContentLoaded', (e) => {
+                      document.querySelector('#createProductForm').addEventListener('submit', createCard)
+                    })
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
