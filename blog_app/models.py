@@ -15,6 +15,7 @@ class Article(models.Model):
     create_date = models.DateTimeField(default=timezone.now, verbose_name='дата создания')
     is_published = models.BooleanField(default=False, verbose_name='опубликовано')
     view_count = models.IntegerField(default=0, verbose_name='количество просмотров')
+    author_email = models.EmailField(verbose_name='email автора', **MF_NULL)
 
     def __str__(self):
         return self.title

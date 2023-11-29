@@ -42,7 +42,7 @@ class ArticleDetailView(DetailView):
 
 class ArticleCreateView(CreateView):
     model = Article
-    fields = ('title', 'content_text', 'preview_image', 'is_published')
+    fields = ('title', 'author_email', 'content_text', 'preview_image', 'is_published')
 
     def form_valid(self, form):
         if form.is_valid():
@@ -52,7 +52,7 @@ class ArticleCreateView(CreateView):
 
 class ArticleUpdateView(UpdateView):
     model = Article
-    fields = ('title', 'content_text', 'preview_image', 'is_published')
+    fields = ('title', 'author_email', 'content_text', 'preview_image', 'is_published')
 
     def form_valid(self, form):
         if form.is_valid():
