@@ -11,38 +11,56 @@
 poetry install
 ```
 
-2. Создайте базу данных и пропишите настройки подключения в [config/settings.py](config/settings.py#L86-L93)
+2. Создайте базу данных и пропишите настройки подключения в файле .env ([шаблон файла](.env.template))
+3. Задайте необходимые [переменные окружения](#переменные-окружения)
+4. Примените миграции
 
-3. Примените миграции
 
 > [!IMPORTANT]
 > 
-> Если до этого была развернута БД под версию [homework_6_4](https://github.com/IldarGaleevSkyProHomeworks/django_homeworks/tree/homework_6.4) и раньше.
-> Перед применением миграций выполните команду:
+> Если перед этим была развернута БД к предыдущим версиям. (Для первичной установки действия из примечания не требуются) 
 > 
-> ```PowerShell
-> python .\manage.py rename_app main store_app
+> Для миграции с версии [homework_6_5](https://github.com/IldarGaleevSkyProHomeworks/django_homeworks/tree/homework_6.5) на текущую необходимо:
+> 
+> 1. Переименовать таблицу `store_app_contact` в `main_app_contact`
+> 2. В таблице `django_content_type` запись `app_label='store_app'|model='contact'` задать значение поля `app_label` в __*main_app*__
+> 3. В таблице `django_migrations`
+>    - В записи `app='store_app'|name='0003_alter_product_preview_image'` значение поля `name` задать в __*0002_alter_product_preview_image*__
+>    - В записи `app='store_app'|name='0002_contact'` значение поля `app` задать в __*main_app*__, а `name` - __*0001_initial*__
+> 
+>  Эквивалентный SQL код для `Postgres`
+> 
+> ```postgresql
+>   -- 1 --
+>   ALTER TABLE store_app_contact RENAME TO main_app_contact;
+>   -- 2 --
+>   UPDATE django_content_type SET app_label='main_app' WHERE app_label='store_app' AND model='contact';
+>   -- 3 --
+>   UPDATE django_migrations SET name='0002_alter_product_preview_image' WHERE app='store_app' AND name='0003_alter_product_preview_image';
+>   UPDATE django_migrations SET app='main_app', name='0001_initial' WHERE app='store_app' AND name='0002_contact';
 > ```
 > 
-> чтобы перенести данные из предыдущей версии.
+> Либо задайте имя базы данных отличным от предыдущей установки и после применения миграций перенесите необходимые данные вручную.
+> 
+> __P.S.__ миграция с более ранних версий не рекомендуется.
+> Для начала пройдите процедуру миграции к версии [homework_6_5](https://github.com/IldarGaleevSkyProHomeworks/django_homeworks/tree/homework_6.5).
 
 ``` PowerShell 
  python .\manage.py migrate
 ```
 
-4. Создайте учетную запись администратора
+5. Создайте учетную запись администратора
 
 ``` PowerShell
 python .\manage.py createsuperuser
 ```
 
-5. Заполните базу, используя команду `mainfill`
+6. Заполните базу, используя команды `mainfill` и `productfill`
 
 ``` PowerShell
 python .\manage.py mainfill
+python .\manage.py product
 ```
-
-6. Задайте необходимые [переменные окружения](#переменные-окружения)
 
 7. Запустите сервер
 ``` PowerShell

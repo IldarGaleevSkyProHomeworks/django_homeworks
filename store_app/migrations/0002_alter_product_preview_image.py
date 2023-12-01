@@ -8,7 +8,7 @@ from utils.hash_storage import HashStorage, product_preview_images
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("store_app", "0002_contact"),
+        ("store_app", "0001_initial"),
     ]
 
     operations = [
