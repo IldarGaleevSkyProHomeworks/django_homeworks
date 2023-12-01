@@ -59,7 +59,7 @@ python .\manage.py createsuperuser
 
 ``` PowerShell
 python .\manage.py mainfill
-python .\manage.py product
+python .\manage.py productfill
 ```
 
 7. Запустите сервер
