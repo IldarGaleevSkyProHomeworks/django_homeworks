@@ -6,3 +6,6 @@ class MainAppConfig(AppConfig):
     name = "main_app"
 
     verbose_name = "Основное"
+
+    popular_product_count = 5
+    popular_article_count = 3

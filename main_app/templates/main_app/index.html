@@ -1,43 +1,59 @@
 {% extends 'share/_base.html' %}
 {% load static %}
-
+{% load product_image_filter %}
 {% block page_content %}
-  <div id="photoCarousel" class="carousel slide carousel-fade mt-2" data-bs-ride="carousel">
-    <div class="carousel-indicators custom-carousel-indicators">
-      <button type="button" data-bs-target="#photoCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#photoCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#photoCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+
+    <h5 class="mt-5 pt-2">Популярные товары</h5>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+        {% for product in popular_products %}
+            <div class="col">
+                <div class="card mb-3 h-100" style="max-width: 540px;">
+                    <img src="{{ product.preview_image|product_image }}"
+                         class="card-img-top object-fit-{% if product.preview_image %}cover{% else %}none{% endif %}"
+                         style="height:200px;" alt="{{ product.name }}"/>
+
+                    <div class="card-body">
+                        <h6 class="card-title">{{ product.name }}</h6>
+                        <p class="card-text">{{ product.description|truncatechars:100 }}</p>
+
+                        <a href="{% url 'store_app:product' product.id %}" class="stretched-link"></a>
+                    </div>
+                    <div class="card-footer text-center">
+                        <span class="fs-3">{{ product.price }}&#x20bd;</span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="col">
+            <div class="card mb-3 h-100 justify-content-center" style="max-width: 540px;">
+                <a href="{% url 'store_app:catalog' %}" class="stretched-link" style="display: flex;">
+                    <span class="text-center fs-2 w-100">Все товары...</span></a>
+            </div>
+        </div>
     </div>
-    <div class="carousel-inner">
-      <div class="carousel-item active" data-bs-interval="3000">
-        <img src="{% static 'store_app/img/s1.png' %}" class="d-block w-100" alt="..." />
-        <div class="carousel-caption d-none d-md-block custom-carousel-caption">
-          <h5>Грибочег</h5>
-          <p>Поганочка... не съедобно, но красиво</p>
-        </div>
-      </div>
-      <div class="carousel-item" data-bs-interval="4000">
-        <img src="{% static 'store_app/img/s2.png' %}" class="d-block w-100" alt="..." />
-        <div class="carousel-caption d-none d-md-block custom-carousel-caption">
-          <h5>Река Ортон</h5>
-          <p>Эта вода станет частью Северного Ледовитого океана... но сначала Мрасу, Томь, Обь и Карское море..</p>
-        </div>
-      </div>
-      <div class="carousel-item" data-bs-interval="3000">
-        <img src="{% static 'store_app/img/s3.png' %}" class="d-block w-100" alt="..." />
-        <div class="carousel-caption d-none d-md-block custom-carousel-caption">
-          <h5>Капельки...</h5>
-          <p>Утро после дождя ...</p>
-        </div>
-      </div>
+
+
+    <h5 class="mt-5 pt-2 border-top">Популярные статьи</h5>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+        {% for article in popular_articles %}
+            <div class="col">
+                <div class="card mb-3 h-100" style="max-width: 540px;">
+                    <div class="card-body">
+                        <h6 class="card-title">{{ article.title }}</h6>
+                        <p class="card-text">{{ article.content_text|truncatechars:100 }}</p>
+
+                        <p class="card-text text-end">
+                            <small class="text-body-secondary ">{{ article.create_date }}</small>
+                        </p>
+                        <a href="{% url 'blog_app:article_detail' article.slug %}" class="stretched-link"></a>
+                    </div>
+
+                    <div class="card-footer">
+                        <small class="text-body-secondary">{{ article.view_count }} просмотров</small>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#photoCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Назад</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#photoCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Вперед</span>
-    </button>
-  </div>
+
 {% endblock %}
