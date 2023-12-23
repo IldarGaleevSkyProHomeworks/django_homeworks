@@ -5,27 +5,42 @@
     <div class="form-floating mb-3">
         {% render_field form.name class='form-control' placeholder=form.name.label %}
         <label for="{{ form.name.auto_id }}">{{form.name.label}}</label>
+        <div class="invalid-feedback">
+            <ul></ul>
+        </div>
     </div>
 
     <div class="form-floating mb-3">
         {% render_field form.description class='form-control' placeholder=form.description.label %}
         <label for="{{ form.description.auto_id }}">{{form.description.label}}</label>
+        <div class="invalid-feedback">
+            <ul></ul>
+        </div>
     </div>
 
     <div class="input-group mb-3">
         <label for="{{ form.price.auto_id }}" class="input-group-text">{{form.price.label}}</label>
         {% render_field form.price class='form-control' step='0.5'%}
         <span class="input-group-text">&#x20bd;</span>
+        <div class="invalid-feedback">
+            <ul></ul>
+        </div>
     </div>
 
     <div class="input-group mb-3">
         <label for="{{ form.category.auto_id }}" class="input-group-text">{{form.category.label}}</label>
         {% render_field form.category class='form-select' %}
+        <div class="invalid-feedback">
+            <ul></ul>
+        </div>
     </div>
 
     <div class="input-group mb-3">
         <label for="{{ form.preview_image.auto_id }}" class="input-group-text">{{form.preview_image.label}}</label>
         {% render_field form.preview_image class='form-control' %}
+        <div class="invalid-feedback">
+            <ul></ul>
+        </div>
     </div>
 
     <button type="submit" class="btn btn-success w-100">

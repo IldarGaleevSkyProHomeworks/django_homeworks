@@ -50,5 +50,7 @@ def create_product(request: WSGIRequest):
                 'description': new_product.description,
                 'image': new_product.preview_image.url if new_product.preview_image else static('/img/hnh_logo.png')
             })
+        else:
+            return JsonResponse({'status': 'fail', 'errors': form.errors})
 
     return JsonResponse({'status': 'fail'})

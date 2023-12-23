@@ -61,6 +61,13 @@
                       let sendBtn = form.querySelector('[type=submit]')
                       let spinner = sendBtn.querySelector('span[role=status]')
 
+                        form.querySelectorAll('input,textarea').forEach((field)=>{
+                            field.classList.remove('is-invalid')
+                        })
+                        form.querySelectorAll('div.invalid-feedback>ul>li').forEach((field)=>{
+                            field.remove()
+                        })
+
                       function waitBtn(state = true) {
                         spinner.hidden = !state
                         if (state) {
@@ -85,6 +92,19 @@
                           form.reset()
                           waitBtn(false)
                           return
+                        }else if('errors' in result){
+                            Object.entries(result.errors).forEach(([field,errors])=>{
+                                let formControl = form.querySelector(`input[name="${field}"],textarea[name="${field}"]`)
+                                let feedBack = formControl.parentElement.querySelector('div.invalid-feedback>ul')
+                                formControl.classList.add('is-invalid')
+                                errors.forEach((errMsg)=>{
+                                    let li = document.createElement('li')
+                                    li.innerText = errMsg
+                                    feedBack.append(li)
+                                })
+                            })
+                            waitBtn(false)
+                            return
                         }
                       } catch (err) {
                         console.log(err)
