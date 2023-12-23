@@ -1,10 +1,10 @@
 import logging
 
 from background_task import background
-from django.core.mail import send_mail, EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
-from apps import BlogAppConfig
+from blog_app.apps import BlogAppConfig
 from blog_app.models import Article
 
 logger = logging.getLogger(__name__)

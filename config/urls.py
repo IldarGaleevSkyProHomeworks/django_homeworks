@@ -20,9 +20,10 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    path('', include('main_app.urls')),
     path("admin/", admin.site.urls),
-    path('', include('store_app.urls')),
-    path('', include('blog_app.urls')),
+    path('catalog/', include('store_app.urls')),
+    path('articles/', include('blog_app.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

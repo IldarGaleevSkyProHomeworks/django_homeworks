@@ -1,0 +1,59 @@
+{% extends 'share/_base.html' %}
+{% load static %}
+{% load product_image_filter %}
+{% block page_content %}
+
+    <h5 class="mt-5 pt-2">Популярные товары</h5>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+        {% for product in popular_products %}
+            <div class="col">
+                <div class="card mb-3 h-100" style="max-width: 540px;">
+                    <img src="{{ product.preview_image|product_image }}"
+                         class="card-img-top object-fit-{% if product.preview_image %}cover{% else %}none{% endif %}"
+                         style="height:200px;" alt="{{ product.name }}"/>
+
+                    <div class="card-body">
+                        <h6 class="card-title">{{ product.name }}</h6>
+                        <p class="card-text">{{ product.description|truncatechars:100 }}</p>
+
+                        <a href="{% url 'store_app:product' product.id %}" class="stretched-link"></a>
+                    </div>
+                    <div class="card-footer text-center">
+                        <span class="fs-3">{{ product.price }}&#x20bd;</span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="col">
+            <div class="card mb-3 h-100 justify-content-center" style="max-width: 540px;">
+                <a href="{% url 'store_app:catalog' %}" class="stretched-link" style="display: flex;">
+                    <span class="text-center fs-2 w-100">Все товары...</span></a>
+            </div>
+        </div>
+    </div>
+
+
+    <h5 class="mt-5 pt-2 border-top">Популярные статьи</h5>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+        {% for article in popular_articles %}
+            <div class="col">
+                <div class="card mb-3 h-100" style="max-width: 540px;">
+                    <div class="card-body">
+                        <h6 class="card-title">{{ article.title }}</h6>
+                        <p class="card-text">{{ article.content_text|truncatechars:100 }}</p>
+
+                        <p class="card-text text-end">
+                            <small class="text-body-secondary ">{{ article.create_date }}</small>
+                        </p>
+                        <a href="{% url 'blog_app:article_detail' article.slug %}" class="stretched-link"></a>
+                    </div>
+
+                    <div class="card-footer">
+                        <small class="text-body-secondary">{{ article.view_count }} просмотров</small>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

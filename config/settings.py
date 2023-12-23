@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "widget_tweaks",
     "background_task",
 
+    "main_app",
     "store_app",
     "blog_app"
 ]
