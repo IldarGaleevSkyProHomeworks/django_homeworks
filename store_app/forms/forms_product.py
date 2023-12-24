@@ -1,7 +1,7 @@
 from django import forms
 
 from store_app.models import Product
-from .utils import find_deprecated_subjects
+from store_app.utils import find_deprecated_subjects
 
 
 class ProductForm(forms.ModelForm):
