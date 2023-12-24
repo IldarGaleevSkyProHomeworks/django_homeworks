@@ -10,7 +10,7 @@ class WordFilter(models.Model):
     is_enable = models.BooleanField(default=True, verbose_name='активно')
 
     def __str__(self):
-        return self.regular_expression if not self.comment else self.comment
+        return self.name
 
     class Meta:
         verbose_name = 'фильтр слов'
