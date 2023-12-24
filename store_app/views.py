@@ -2,7 +2,7 @@ from django.http import JsonResponse, Http404
 from django.shortcuts import redirect
 from django.templatetags.static import static
 from django.urls import reverse
-from django.views.generic import DetailView, ListView, CreateView
+from django.views.generic import DetailView, ListView, CreateView, UpdateView
 
 from store_app.forms import ProductForm
 from store_app.models import Product
@@ -59,3 +59,12 @@ class ProductCreateView(CreateView):
             return JsonResponse({'status': 'fail', 'errors': form.errors})
         else:
             return super().form_invalid(form)
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+
+    def form_valid(self, form):
+        updated_product = form.save()
+        return redirect(reverse('store_app:product', kwargs={'pk': updated_product.id}))

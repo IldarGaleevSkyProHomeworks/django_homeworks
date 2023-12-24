@@ -1,7 +1,7 @@
 {% load widget_tweaks %}
 <div class="row {{ extra_classes }}">
   <div class="col">
-    <form action="{% url 'store_app:create_product' %}" method="post" enctype="multipart/form-data"
+    <form method="post" enctype="multipart/form-data"
           id="createProductForm">
       {% csrf_token %}
       {% with WIDGET_ERROR_CLASS='is-invalid' %}
@@ -67,10 +67,15 @@
           </div>
         </div>
 
-        <button type="submit" class="btn btn-success w-100">
-          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
-          <span class="sr-only">Сохранить</span>
-        </button>
+        <div class="btn-group" role="group">
+          {% if object %}
+            <a class="btn btn-secondary" href="{% url 'store_app:product' object.id %}">Отмена</a>
+          {% endif %}
+          <button type="submit" class="btn btn-success w-100">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
+            <span class="sr-only">Сохранить</span>
+          </button>
+        </div>
       {% endwith %}
     </form>
   </div>
