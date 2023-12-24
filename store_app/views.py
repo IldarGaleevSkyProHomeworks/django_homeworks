@@ -1,9 +1,8 @@
-from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse, Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.templatetags.static import static
 from django.urls import reverse
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, CreateView
 
 from store_app.forms import ProductForm
 from store_app.models import Product
@@ -37,11 +36,13 @@ class ProductDetailView(DetailView):
             return redirect(reverse('store_app:catalog'))
 
 
-def create_product(request: WSGIRequest):
-    if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES)
-        if form.is_valid():
-            new_product = form.save()
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+
+    def form_valid(self, form):
+        new_product = form.save()
+        if self.request.headers.get('x-requested-with') == 'XMLHttpRequest':
             return JsonResponse({
                 'status': 'ok',
                 'id': new_product.id,
@@ -51,6 +52,10 @@ def create_product(request: WSGIRequest):
                 'image': new_product.preview_image.url if new_product.preview_image else static('/img/hnh_logo.png')
             })
         else:
-            return JsonResponse({'status': 'fail', 'errors': form.errors})
+            return redirect(reverse('store_app:product', kwargs={'pk': new_product.id}))
 
-    return JsonResponse({'status': 'fail'})
+    def form_invalid(self, form):
+        if self.request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({'status': 'fail', 'errors': form.errors})
+        else:
+            return super().form_invalid(form)

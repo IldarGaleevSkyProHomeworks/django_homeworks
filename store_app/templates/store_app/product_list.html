@@ -82,6 +82,7 @@
                       waitBtn()
                       let response = await fetch('{% url "store_app:create_product" %}', {
                         method: 'POST',
+                        headers: {'x-requested-with':'XMLHttpRequest'},
                         body: new FormData(form)
                       })
 
