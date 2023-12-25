@@ -70,12 +70,18 @@
     {% if formset %}
       <div class="col">
         {{ formset.management_form }}
+        <div class="invalid-feedback {% if formset.non_form_errors %}d-block{% endif %}">
+          <ul>
+            {% for non_form_error in formset.non_form_errors %}
+              <li>{{ non_form_error }}</li>
+            {% endfor %}
+          </ul>
+        </div>
         {% for product_version_form in formset %}
           {% include 'store_app/share/forms/_form_productversion.html' with form=product_version_form is_inline=True %}
         {% endfor %}
-
       </div>
-    {% endif %}
+  {% endif %}
   </div>
     <div class="btn-group" role="group">
         {% if object %}

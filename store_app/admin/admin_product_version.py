@@ -1,10 +1,12 @@
 from django.contrib import admin
 
+from store_app.forms import ProductVersionFormset
 from store_app.models import ProductVersion
 
 
 class ProductVersionInline(admin.StackedInline):
     model = ProductVersion
+    formset = ProductVersionFormset
     extra = 1
 
 
