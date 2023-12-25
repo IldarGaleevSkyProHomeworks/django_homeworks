@@ -1,0 +1,80 @@
+{% load widget_tweaks %}
+{% with WIDGET_ERROR_CLASS='is-invalid' %}
+  {% if not is_inline %}
+    <form method="post">
+    {% csrf_token %}
+  {% else %}
+    {{ form.id }}
+  {% endif %}
+{#{{ form.as_p }}#}
+
+<div class="form-floating mb-3">
+  {% render_field form.version_name class='form-control' placeholder=form.version_name.label %}
+  <label for="{{ form.version_name.auto_id }}">{{ form.version_name.label }}</label>
+  <div class="invalid-feedback">
+    <ul>
+      {% for err in form.version_name.errors %}
+        <li>{{ err }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<div class="form-floating mb-3">
+  {% render_field form.version_number class='form-control' placeholder=form.version_number.label %}
+  <label for="{{ form.version_number.auto_id }}">{{ form.version_number.label }}</label>
+  <div class="invalid-feedback">
+    <ul>
+      {% for err in form.version_number.errors %}
+        <li>{{ err }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<div class="form-check mb-3">
+  {% render_field form.is_latest class='form-check-input' %}
+  <label for="{{ form.is_latest.auto_id }}">{{ form.is_latest.label }}</label>
+  <div class="invalid-feedback">
+    <ul>
+      {% for err in form.is_latest.errors %}
+        <li>{{ err }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+{% if is_inline and not forloop.last%}
+  <div class="form-check mb-3">
+    {% render_field form.DELETE class='form-check-input' %}
+    <label for="{{ form.DELETE.auto_id }}">{{ form.DELETE.label }}</label>
+    <div class="invalid-feedback">
+      <ul>
+        {% for err in form.DELETE.errors %}
+          <li>{{ err }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <hr>
+{% endif %}
+
+{% if not is_inline %}
+
+  <div class="input-group mb-3">
+    <label for="{{ form.product.auto_id }}" class="input-group-text">{{ form.product.label }}</label>
+    {% render_field form.product class='form-select' %}
+    <div class="invalid-feedback">
+      <ul>
+        {% for err in form.product.errors %}
+          <li>{{ err }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <button class="btn btn-success" type="submit">Сохранить</button>
+
+  </form>
+{% endif %}
+{% endwith %}
