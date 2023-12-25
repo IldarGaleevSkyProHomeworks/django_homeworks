@@ -1,0 +1,6 @@
+{% extends 'share/_base.html' %}
+{% load product_image_filter %}
+
+{% block page_content %}
+    {% include 'store_app/share/forms/_form_product.html' with extra_classes='mt-5' %}
+{% endblock %}
