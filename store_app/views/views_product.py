@@ -4,9 +4,8 @@ from django.templatetags.static import static
 from django.urls import reverse
 from django.views.generic import DetailView, ListView, CreateView, UpdateView
 
-from forms import ProductVersionForm, ProductVersionFormset
-from store_app.forms import ProductForm
-from store_app.models import Product, ProductVersion
+from store_app.forms import ProductForm, ProductVersionFormset
+from store_app.models import Product
 from store_app.apps import StoreAppConfig
 
 
