@@ -1,3 +1,9 @@
+:root {
+    --app-acrylic-backdrop-filter: blur(7px);
+    --app-acrylic-transparent: 0.8;
+}
+
+
 .wrapper {
     min-height: 100vh;
     display: flex;
@@ -39,4 +45,10 @@ a.phone {
 .bottom-transparent {
     -webkit-mask-image: linear-gradient(black 73%, transparent);
     mask-image: linear-gradient(black 73%, transparent);
+}
+
+.acrylic-bg-dark {
+    background-color: rgba(var(--bs-dark-rgb), var(--app-acrylic-transparent));
+    backdrop-filter: var(--app-acrylic-backdrop-filter);
+    box-shadow: var(--bs-box-shadow);
 }
