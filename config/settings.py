@@ -52,7 +52,8 @@ INSTALLED_APPS = [
 
     "main_app",
     "store_app",
-    "blog_app"
+    "blog_app",
+    "accounts_app",
 ]
 
 MIDDLEWARE = [
@@ -177,3 +178,5 @@ else:
     EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', False)
     EMAIL_USE_SSL = env.bool('EMAIL_USE_SSL', True)
     DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL')
+
+AUTH_USER_MODEL = 'accounts_app.User'

@@ -37,3 +37,7 @@ def product_preview_images(instance, filename):
 
 def article_preview_images(instance, filename):
     return _get_file_hash_path('article_preview_images', instance, filename)
+
+
+def user_logo_images(instance, filename):
+    return _get_file_hash_path('user_logo_images', instance, filename)
