@@ -1,0 +1,34 @@
+{% extends 'share/_base.html' %}
+{% load widget_tweaks %}
+
+{% block page_content %}
+
+<div class="position-absolute top-50 start-50 translate-middle w-25">
+  <form method="post">
+    {% with WIDGET_ERROR_CLASS='is-invalid' %}
+    {% csrf_token %}
+    <div class="form-floating mb-3">
+      {% render_field form.username class='form-control' placeholder=form.username.label %}
+      <label for="{{ form.username.auto_id }}">{{ form.username.label }}</label>
+    </div>
+
+    <div class="form-floating mb-3">
+      {% render_field form.password class='form-control' placeholder=form.password.label %}
+      <label for="{{ form.password.auto_id }}">{{ form.password.label }}</label>
+    </div>
+    <div class="invalid-feedback {% if form.non_field_errors %}d-block{% endif %}">
+        {{ form.non_field_errors }}
+    </div>
+    <div class="d-flex justify-content-center my-4">
+      <button class="btn btn-lg btn-success w-100" type="submit">Войти</button>
+    </div>
+    <div class="d-flex justify-content-center">
+      <a href="#" class="link-secondary">Забыли пароль</a>
+    </div>
+    <div class="d-flex justify-content-center">
+      <a href="{% url 'accounts:registration' %}">Регистрация</a>
+    </div>
+  {% endwith %}
+  </form>
+  </div>
+{% endblock %}

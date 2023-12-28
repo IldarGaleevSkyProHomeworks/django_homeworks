@@ -13,6 +13,8 @@ import json
 import os
 import logging.config
 from pathlib import Path
+
+from django.urls import reverse_lazy
 from environs import Env
 
 env = Env()
@@ -180,3 +182,4 @@ else:
     DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL')
 
 AUTH_USER_MODEL = 'accounts_app.User'
+LOGOUT_REDIRECT_URL = reverse_lazy('accounts:login')

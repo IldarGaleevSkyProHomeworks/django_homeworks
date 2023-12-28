@@ -1,52 +1,66 @@
 <div class="container-fluid">
-    <a class="navbar-brand text-uppercase" href="/">Horns'n'Hoofs</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
-            class="navbar-toggler-icon"></span></button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            {% with url_name=request.resolver_match.namespace|add:":"|add:request.resolver_match.url_name %}
-                <li class="nav-item">
-                    <a class="nav-link {% if url_name == 'main_app:index' %}active{% endif %}"
-                       href="{% url 'main_app:index' %}">Главная</a>
+  <a class="navbar-brand text-uppercase" href="/">Horns'n'Hoofs</a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+      class="navbar-toggler-icon"></span></button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      {% with url_name=request.resolver_match.namespace|add:":"|add:request.resolver_match.url_name %}
+        <li class="nav-item">
+          <a class="nav-link {% if url_name == 'main_app:index' %}active{% endif %}"
+             href="{% url 'main_app:index' %}">Главная</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if url_name == 'store_app:catalog' %}active{% endif %}"
+             href="{% url 'store_app:catalog' %}">Каталог</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link {% if url_name == 'blog_app:articles' %}active{% endif %}"
+             href="{% url 'blog_app:articles' %}">Статьи</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link {% if url_name == 'main_app:contacts' %}active{% endif %}"
+             href="{% url 'main_app:contacts' %}">Контакты</a>
+        </li>
+
+        {% if user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+               aria-expanded="false">Аккаунт</a>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item {% if url_name == 'accounts:user_detail' %}disabled{% endif %}"
+                   href="{% url 'accounts:user_detail' %}">Профиль</a>
+              </li>
+              {% if user.is_staff %}
+                <li>
+                  <hr class="dropdown-divider">
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if url_name == 'store_app:catalog' %}active{% endif %}"
-                       href="{% url 'store_app:catalog' %}">Каталог</a>
+                <li>
+                  <a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank"
+                     rel="noopener noreferrer">Django admin</a>
                 </li>
+              {% endif %}
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item link-danger link-opacity-75" href="{% url 'accounts:logout' %}">Выход</a></li>
+            </ul>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'accounts:login' %}">Войти</a>
+          </li>
 
-                <li class="nav-item">
-                    <a class="nav-link {% if url_name == 'blog_app:articles' %}active{% endif %}"
-                       href="{% url 'blog_app:articles' %}">Статьи</a>
-                </li>
+        {% endif %}
+      {% endwith %}
+    </ul>
 
-                <li class="nav-item">
-                    <a class="nav-link {% if url_name == 'main_app:contacts' %}active{% endif %}"
-                       href="{% url 'main_app:contacts' %}">Контакты</a>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                       aria-expanded="false">Управление</a>
-                    <ul class="dropdown-menu">
-
-                        {% if debug %}
-                            <!--          <li><hr class="dropdown-divider"></li>-->
-                            <li class="nav-item">
-                                <a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank"
-                                   rel="noopener noreferrer">Django admin</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </li>
-
-
-
-            {% endwith %}
-        </ul>
-        <!--form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-          <button class="btn btn-outline-success" type="submit">Поиск</button>
-        </form-->
-    </div>
+    <!--form class="d-flex" role="search">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+      <button class="btn btn-outline-success" type="submit">Поиск</button>
+    </form-->
+  </div>
 </div>
