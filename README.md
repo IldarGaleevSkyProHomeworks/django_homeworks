@@ -24,49 +24,49 @@ poetry install
 > 
 > 1. Отключить приложение `accounts_app`:
 >
->   ```python
+> ```python
 >   INSTALLED_APPS = [
->   	...
->   	# "accounts_app",
+>       ...
+>       # "accounts_app",
 >   ]
 >   
 >   ...
 >   
 >   # AUTH_USER_MODEL = 'accounts_app.User'
 >
->    ```
+> ```
 >
 > 2. Отменить миграции для приложений `admin` и `auth`
 >
->   ```PowerShell
+> ```PowerShell
 >   python .\manage.py migrate admin zero
 >   python .\manage.py migrate auth zero
->   ```
+> ```
 >
 > 3. Включить приложение `accounts_app`
 >
->   ```python
->   INSTALLED_APPS = [
->   	...
->   	"accounts_app",
+> ```python
+> INSTALLED_APPS = [
+>   ...
+>   "accounts_app",
 >   ]
 >   
->   ...
->   
->   AUTH_USER_MODEL = 'accounts_app.User'
->   ```
+> ...
+>
+> AUTH_USER_MODEL = 'accounts_app.User'
+> ```
 > 
 > 4. Применить миграции
 > 
->   ```PowerShell
->   python .\manage.py migrate
->   ```
+> ```PowerShell
+> python .\manage.py migrate
+> ```
 > 
 > 5. Создать новую учетную запись администратора
 > 
->   ```PowerShell
->   python .\manage.py createadmin
->   ```
+> ```PowerShell
+> python .\manage.py createsuperuser
+> ```
 >
 >   
 > __P.S.__ миграция с более ранних версий не рекомендуется.
@@ -78,12 +78,8 @@ poetry install
 
 5. Создайте учетную запись администратора
 
-> [!IMPORTANT]
-> 
-> Не используйте встроенную команду `createsuperuser` - модели пользователей не совместимы!
-
 ``` PowerShell
-python .\manage.py createadmin
+python .\manage.py createsuperuser
 ```
 
 6. Заполните базу, используя команды `mainfill` и `productfill`
@@ -132,14 +128,6 @@ python .\manage.py generatearticles 15 -p
 
 ```PowerShell
 python .\manage.py process_tasks
-```
-
-### createadmin
-
-Создание суперпользователя (замена встроенной команды `createsuperuser`).
-
-```PowerShell
-python .\manage.py createadmin
 ```
 
 
