@@ -14,8 +14,9 @@ from accounts_app.forms import UserRegisterForm
 from tasks.send_mail import send_email_to_verify
 
 
-class UserDetailView(DetailView, LoginRequiredMixin):
+class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
+    login_url = reverse_lazy('accounts:login')
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
