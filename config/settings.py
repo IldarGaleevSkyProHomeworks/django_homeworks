@@ -184,3 +184,6 @@ else:
 
 AUTH_USER_MODEL = 'accounts_app.User'
 LOGOUT_REDIRECT_URL = reverse_lazy('accounts:login')
+
+if DEBUG:
+    AUTH_PASSWORD_VALIDATORS = []
