@@ -3,7 +3,8 @@ from django.urls import path
 from django.views.generic import TemplateView
 
 from accounts_app.apps import AccountsAppConfig
-from accounts_app.views import UserDetailView, UserCreateView, UserEmailVerify, VerifyMailAgain, UserResetPassword
+from accounts_app.views import (UserDetailView, UserCreateView, UserEmailVerify,
+                                VerifyMailAgain, UserResetPassword, UserEditView)
 
 app_name = AccountsAppConfig.name
 
@@ -14,6 +15,7 @@ urlpatterns = [
     path('registration/email_verify/<uidb64>/<token>/', UserEmailVerify.as_view(), name='email_verify'),
     path('registration/email_verify/resend', VerifyMailAgain.as_view(), name='email_verify_again'),
     path('reset_password/', UserResetPassword.as_view(), name='reset_password'),
+    path('edit/', UserEditView.as_view(), name='user_edit'),
 
     path('login/', LoginView.as_view(
         template_name='accounts_app/login.html',

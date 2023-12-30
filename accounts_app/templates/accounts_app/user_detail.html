@@ -13,17 +13,31 @@
       </h2>
       <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
         <div class="accordion-body">
-          <ul>
-            <li>{{ user.first_name }}</li>
-            <li>
-              {{ user.email }}
-              {% if not user.is_email_verify %}
-                <p>Адрес почты не подтвержден!</p>
-                <a href="{% url 'accounts:email_verify_again' %}">Выслать ссылку подтверждения повторно</a>
-              {% endif %}
-            </li>
-            <li>{{ user.phone }}</li>
-          </ul>
+          <table class="table table-striped">
+            <tr>
+              <th>Имя:</th>
+              <td>{{ user.first_name }} {{ user.last_name }}</td>
+            </tr>
+            <tr>
+              <th>email:</th>
+              <td>
+                {{ user.email }}
+                {% if not user.is_email_verify %}
+                  <p class="text-warning-emphasis">Адрес почты не подтвержден!</p>
+                  <a href="{% url 'accounts:email_verify_again' %}">Выслать ссылку подтверждения повторно</a>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <th>Телефон:</th>
+              <td>{{ user.phone }}</td>
+            </tr>
+            <tr>
+              <th>Последний вход:</th>
+              <td>{{ user.last_login }}</td>
+            </tr>
+          </table>
+          <a class="btn btn-secondary" href="{% url 'accounts:user_edit' %}">Редактировать</a>
         </div>
       </div>
     </div>
@@ -81,17 +95,28 @@
               <tr>
                 <th>Название</th>
                 <th>Просмотров</th>
+                <th>Дата написания</th>
+                <th>Статус публикации</th>
               </tr>
               </thead>
               <tbody>
               {% for article in user.articles.all %}
                 <tr>
                   <td>
-                    <a href="{% url 'blog_app:article_detail' article.slug %}" target="_blank" rel="noopener noreferrer">
+                    <a href="{% url 'blog_app:article_detail' article.slug %}" target="_blank"
+                       rel="noopener noreferrer">
                       {{ article.title }}
                     </a>
                   </td>
                   <td>{{ article.view_count }}</td>
+                  <td>{{ article.create_date }}</td>
+                  <td>
+                    {% if article.is_published %}
+                      <span class="text-success-emphasis">Опубликовано</span>
+                    {% else %}
+                      <span class="text-secondary-emphasis">Не опубликовано</span>
+                    {% endif %}
+                  </td>
                 </tr>
               {% endfor %}
               </tbody>

@@ -6,11 +6,11 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.http import urlsafe_base64_decode
 from django.views import View
-from django.views.generic import DetailView, CreateView, TemplateView, FormView
+from django.views.generic import DetailView, CreateView, FormView, UpdateView
 from django.contrib.auth.tokens import default_token_generator as token_generator
 
 from accounts_app.models import User
-from accounts_app.forms import UserRegisterForm, UserResetPasswordForm
+from accounts_app.forms import UserRegisterForm, UserResetPasswordForm, UserEditForm
 from tasks.send_mail import send_email_to_verify, send_new_user_password
 
 
@@ -45,6 +45,28 @@ class UserCreateView(CreateView):
             send_email_to_verify(self.object.id, get_current_site(self.request).id)
             return redirect(reverse_lazy('accounts:email_verify_alert'))
 
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class UserEditView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserEditForm
+    template_name = 'accounts_app/user_edit.html'
+    success_url = reverse_lazy('accounts:user_detail')
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['title'] = 'Редактирование профиля'
+        return ctx
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def form_valid(self, form):
+        if form.is_valid():
+            user = form.save()
+            login(self.request, user)
+            return redirect(reverse_lazy('accounts:user_detail'))
         return self.render_to_response(self.get_context_data(form=form))
 
 
