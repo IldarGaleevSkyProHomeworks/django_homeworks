@@ -13,6 +13,8 @@ import json
 import os
 import logging.config
 from pathlib import Path
+
+from django.urls import reverse_lazy
 from environs import Env
 
 env = Env()
@@ -46,13 +48,16 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     "django_rename_app",
     "widget_tweaks",
     "background_task",
+    "captcha",
 
     "main_app",
     "store_app",
-    "blog_app"
+    "blog_app",
+    "accounts_app",
 ]
 
 MIDDLEWARE = [
@@ -177,3 +182,13 @@ else:
     EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', False)
     EMAIL_USE_SSL = env.bool('EMAIL_USE_SSL', True)
     DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL')
+
+AUTH_USER_MODEL = 'accounts_app.User'
+LOGOUT_REDIRECT_URL = reverse_lazy('accounts:login')
+
+if DEBUG:
+    AUTH_PASSWORD_VALIDATORS = []
+
+CAPTCHA_BACKGROUND_COLOR = '#212529'
+CAPTCHA_FOREGROUND_COLOR = '#dee2e6'
+CAPTCHA_FONT_SIZE = 26

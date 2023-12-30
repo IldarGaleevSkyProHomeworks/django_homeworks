@@ -8,10 +8,6 @@
             {% render_field form.title class='form-control' placeholder=form.title.label %}
             <label for="{{ form.title.auto_id }}">{{ form.title.label }}</label>
         </div>
-        <div class="form-floating mb-3">
-            {% render_field form.author_email class='form-control' placeholder=form.author_email.label %}
-            <label for="{{ form.author_email.auto_id }}">{{ form.author_email.label }}</label>
-        </div>
         <div class="input-group mb-3">
             <label for="{{ form.preview_image.auto_id }}"
                    class="input-group-text">{{ form.preview_image.label }}</label>

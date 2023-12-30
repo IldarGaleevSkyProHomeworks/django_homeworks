@@ -1,3 +1,5 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
@@ -39,13 +41,29 @@ class ArticleDetailView(DetailView):
         self.object.view_count += 1
         self.object.save()
         if self.object.view_count in BlogAppConfig.article_view_counts_congrats:
-            tasks.send_mail.task_article_congrats(self.object.id, self.object.view_count)
+            tasks.send_mail.task_article_congrats(
+                article_id=self.object.id,
+                site_id=get_current_site(self.request).id,
+                view_count=self.object.view_count
+            )
         return self.object
 
 
-class ArticleCreateView(CreateView):
+class ArticleCreateView(LoginRequiredMixin, CreateView):
     model = Article
-    fields = ('title', 'author_email', 'content_text', 'preview_image', 'is_published')
+    fields = ('title', 'content_text', 'preview_image', 'is_published')
+
+    def form_valid(self, form):
+        if form.is_valid():
+            new_obj = form.save(commit=False)
+            new_obj.author = self.request.user
+            new_obj.save()
+            return redirect(reverse('blog_app:article_detail', kwargs={'slug': new_obj.slug}))
+
+
+class ArticleUpdateView(LoginRequiredMixin, UpdateView):
+    model = Article
+    fields = ('title', 'content_text', 'preview_image', 'is_published')
 
     def form_valid(self, form):
         if form.is_valid():
@@ -53,17 +71,7 @@ class ArticleCreateView(CreateView):
             return redirect(reverse('blog_app:article_detail', kwargs={'slug': new_obj.slug}))
 
 
-class ArticleUpdateView(UpdateView):
-    model = Article
-    fields = ('title', 'author_email', 'content_text', 'preview_image', 'is_published')
-
-    def form_valid(self, form):
-        if form.is_valid():
-            new_obj = form.save()
-            return redirect(reverse('blog_app:article_detail', kwargs={'slug': new_obj.slug}))
-
-
-class ArticleDeleteView(DeleteView):
+class ArticleDeleteView(LoginRequiredMixin, DeleteView):
     model = Article
     success_url = reverse_lazy('blog_app:articles')
 

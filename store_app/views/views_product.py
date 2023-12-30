@@ -1,12 +1,12 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse, Http404
 from django.shortcuts import redirect
 from django.templatetags.static import static
 from django.urls import reverse
 from django.views.generic import DetailView, ListView, CreateView, UpdateView
 
-from forms import ProductVersionForm, ProductVersionFormset
-from store_app.forms import ProductForm
-from store_app.models import Product, ProductVersion
+from store_app.forms import ProductForm, ProductVersionFormset
+from store_app.models import Product
 from store_app.apps import StoreAppConfig
 
 
@@ -40,7 +40,7 @@ class ProductDetailView(DetailView):
             return redirect(reverse('store_app:catalog'))
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
 
@@ -59,19 +59,26 @@ class ProductCreateView(CreateView):
         return ctx
 
     def form_valid(self, form):
+        def create_product():
+            new_product = form.save(commit=False)
+            new_product.seller = self.request.user
+            new_product.save()
+            return new_product
+
         formset: ProductVersionFormset = self.get_context_data()['formset']
         formset_errors = None
 
         if len(formset):
             if formset.is_valid():
-                new_product = form.save()
+                new_product = create_product()
+
                 formset.instance = new_product
                 formset.save()
             else:
                 formset_errors = formset.errors
                 new_product = None
         else:
-            new_product = form.save()
+            new_product = create_product()
 
         if self._is_ajax():
             if formset_errors:
@@ -100,7 +107,7 @@ class ProductCreateView(CreateView):
             return super().form_invalid(form)
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
 

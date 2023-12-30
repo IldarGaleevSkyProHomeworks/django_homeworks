@@ -1,0 +1,49 @@
+{% extends 'share/_base.html' %}
+{% load widget_tweaks %}
+
+{% block page_content %}
+
+  <div class="position-absolute top-50 start-50 translate-middle w-25">
+    <form method="post">
+      {% with WIDGET_ERROR_CLASS='is-invalid' %}
+        {% csrf_token %}
+
+        <div class="form-floating mb-3">
+          {% render_field form.phone class='form-control' placeholder=form.phone.label %}
+          <label for="{{ form.phone.auto_id }}">{{ form.phone.label }}</label>
+          <div class="invalid-feedback">
+            {{ form.phone.errors }}
+          </div>
+        </div>
+
+        <div class="form-floating mb-3">
+          {% render_field form.first_name class='form-control' placeholder=form.first_name.label %}
+          <label for="{{ form.first_name.auto_id }}">{{ form.first_name.label }}</label>
+          <div class="invalid-feedback">
+            {{ form.first_name.errors }}
+          </div>
+        </div>
+
+        <div class="form-floating mb-3">
+          {% render_field form.last_name class='form-control' placeholder=form.last_name.label %}
+          <label for="{{ form.last_name.auto_id }}">{{ form.last_name.label }}</label>
+          <div class="invalid-feedback">
+            {{ form.last_name.errors }}
+          </div>
+        </div>
+
+        <div class="form-floating mb-3">
+          {% render_field form.country class='form-select' %}
+          <label for="{{ form.country.auto_id }}">{{ form.country.label }}</label>
+        </div>
+        <div class="hstack gap-3 my-4">
+
+          <a class="btn btn-secondary" href="{% url 'accounts:user_detail' %}">Отмена</a>
+          <button class="btn btn-success" type="submit">Сохранить</button>
+
+        </div>
+      {% endwith %}
+    </form>
+  </div>
+
+{% endblock %}

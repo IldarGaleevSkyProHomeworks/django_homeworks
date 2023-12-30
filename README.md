@@ -1,4 +1,4 @@
-# Домашняя работа 6.6
+# Домашняя работа 6.7
 
 <div align="center">
 <a href="https://wakatime.com/@IldarGaleev/projects/fereckcopm"><img src="https://wakatime.com/badge/user/45799db8-b1f8-4627-9264-2c8d4c352567/project/018beb28-96ef-4887-b044-66638d506f2f.svg" alt="wakatime"></a>
@@ -20,30 +20,57 @@ poetry install
 > 
 > Если перед этим была развернута БД к предыдущим версиям. (Для первичной установки действия из примечания не требуются) 
 > 
-> Для миграции с версии [homework_6_5](https://github.com/IldarGaleevSkyProHomeworks/django_homeworks/tree/homework_6.5) на текущую необходимо:
+> Для миграции с версии [homework_6_6](https://github.com/IldarGaleevSkyProHomeworks/django_homeworks/tree/homework_6.6) на текущую необходимо:
 > 
-> 1. Переименовать таблицу `store_app_contact` в `main_app_contact`
-> 2. В таблице `django_content_type` запись `app_label='store_app'|model='contact'` задать значение поля `app_label` в __*main_app*__
-> 3. В таблице `django_migrations`
->    - В записи `app='store_app'|name='0003_alter_product_preview_image'` значение поля `name` задать в __*0002_alter_product_preview_image*__
->    - В записи `app='store_app'|name='0002_contact'` значение поля `app` задать в __*main_app*__, а `name` - __*0001_initial*__
-> 
->  Эквивалентный SQL код для `Postgres`
-> 
-> ```postgresql
->   -- 1 --
->   ALTER TABLE store_app_contact RENAME TO main_app_contact;
->   -- 2 --
->   UPDATE django_content_type SET app_label='main_app' WHERE app_label='store_app' AND model='contact';
->   -- 3 --
->   UPDATE django_migrations SET name='0002_alter_product_preview_image' WHERE app='store_app' AND name='0003_alter_product_preview_image';
->   UPDATE django_migrations SET app='main_app', name='0001_initial' WHERE app='store_app' AND name='0002_contact';
+> 1. Отключить приложение `accounts_app`:
+>
+> ```python
+>   INSTALLED_APPS = [
+>       ...
+>       # "accounts_app",
+>   ]
+>   
+>   ...
+>   
+>   # AUTH_USER_MODEL = 'accounts_app.User'
+>
+> ```
+>
+> 2. Отменить миграции для приложений `admin` и `auth`
+>
+> ```PowerShell
+>   python .\manage.py migrate admin zero
+>   python .\manage.py migrate auth zero
+> ```
+>
+> 3. Включить приложение `accounts_app`
+>
+> ```python
+> INSTALLED_APPS = [
+>   ...
+>   "accounts_app",
+>   ]
+>   
+> ...
+>
+> AUTH_USER_MODEL = 'accounts_app.User'
 > ```
 > 
-> Либо задайте имя базы данных отличным от предыдущей установки и после применения миграций перенесите необходимые данные вручную.
+> 4. Применить миграции
 > 
+> ```PowerShell
+> python .\manage.py migrate
+> ```
+> 
+> 5. Создать новую учетную запись администратора
+> 
+> ```PowerShell
+> python .\manage.py createsuperuser
+> ```
+>
+>   
 > __P.S.__ миграция с более ранних версий не рекомендуется.
-> Для начала пройдите процедуру миграции к версии [homework_6_5](https://github.com/IldarGaleevSkyProHomeworks/django_homeworks/tree/homework_6.5).
+> Для начала пройдите процедуру миграции к версии [homework_6_6](https://github.com/IldarGaleevSkyProHomeworks/django_homeworks/tree/homework_6.6).
 
 ``` PowerShell 
  python .\manage.py migrate
@@ -103,6 +130,7 @@ python .\manage.py generatearticles 15 -p
 python .\manage.py process_tasks
 ```
 
+
 ## Переменные окружения
 
 > [!TIP]
@@ -123,9 +151,9 @@ python .\manage.py process_tasks
 
 ### Страница товаров
 
-| Переменная                                             | Файл настроек                          | Назначение                     |
-|--------------------------------------------------------|----------------------------------------|--------------------------------|
-| `STORE_CATALOG_PER_PAGE` <sup>[1](#old_per_page)</sup> | [store_app/apps.py](store_app/apps.py) | Количество товаров на странице |
+| Переменная               | Файл настроек                          | Назначение                     |
+|--------------------------|----------------------------------------|--------------------------------|
+| `STORE_CATALOG_PER_PAGE` | [store_app/apps.py](store_app/apps.py) | Количество товаров на странице |
 
 
 ### Страница публикаций
@@ -177,7 +205,7 @@ python .\manage.py process_tasks
 Доступна проверка текста по регулярному выражению для добавляемого товара (в названии и описании) на предмет
 наличия запрещенных слов.
 
-Добавить фильтры можно в панеле администрирования в разделе `магазин\фильтры слов`
+Добавить фильтры можно в панели администрирования в разделе `магазин\фильтры слов`
 
 Примеры фильтров:
 
@@ -199,8 +227,3 @@ python .\manage.py process_tasks
         <td><code>((крипт|криптовалют|бирж)[е|а|у])|(cripto)</code></td>
     </tr>
 </table>
-
-
----
-
-<a name="old_per_page">1</a> - в предыдущих версиях MAIN_CATALOG_PER_PAGE
