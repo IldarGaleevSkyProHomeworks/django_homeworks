@@ -1,7 +1,7 @@
 {% extends 'share/_base.html' %}
 
 {% block page_content %}
-  {% if user.pk == object.author.pk or user.is_staff %}
+  {% if object.author and user.pk == object.author.pk or user.is_staff %}
     <div class="mt-4 btn-group" role="group">
       <a href="{% url 'blog_app:article_update' object.slug %}" class="btn btn-primary">Править публикацию</a>
       <a href="{% url 'blog_app:article_delete' object.slug %}" class="btn btn-danger">Удалить публикацию</a>

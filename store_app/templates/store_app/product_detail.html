@@ -3,7 +3,7 @@
 
 {% block page_content %}
   <div class="container mt-4">
-    {% if user.pk == object.seller.pk or user.is_staff %}
+    {% if object.seller and user.pk == object.seller.pk or user.is_staff %}
       <div class="btn-group mb-3" role="group">
         <a class="btn btn-primary" href="{% url 'store_app:update_product' object.id %}">Редактировать товар</a>
       </div>
