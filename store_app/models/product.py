@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 
+from accounts_app.models import User
 from utils.hash_storage import product_preview_images, HashStorage
 from utils.const import MF_NULL
 
@@ -17,6 +18,9 @@ class Product(models.Model):
     modify_date = models.DateTimeField(verbose_name='дата изменения', default=timezone.now)
     preview_image = models.ImageField(upload_to=product_preview_images, storage=HashStorage(),
                                       verbose_name='изображение', **MF_NULL)  # 'product_preview_images/'
+
+    seller = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='products',
+                               verbose_name='Продавец', **MF_NULL)
 
     def __str__(self):
         return f'{self.name}: {self.price:.3}'

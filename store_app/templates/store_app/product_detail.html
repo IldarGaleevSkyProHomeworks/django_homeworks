@@ -3,18 +3,22 @@
 
 {% block page_content %}
   <div class="container mt-4">
-    <div class="btn-group mb-3" role="group">
-      <a class="btn btn-primary" href="{% url 'store_app:update_product' object.id %}">Редактировать товар</a>
-    </div>
+    {% if user.pk == object.seller.pk or user.is_staff %}
+      <div class="btn-group mb-3" role="group">
+        <a class="btn btn-primary" href="{% url 'store_app:update_product' object.id %}">Редактировать товар</a>
+      </div>
+    {% endif %}
     <div class="row">
       <div class="col-6 col-md-4">
         <img src="{{ object.preview_image|product_image }}"
              class="card-img-top object-fit-{% if object.preview_image %}cover{% else %}none{% endif %}"
              style="height:400px;" alt="{{ object.name }}"/>
         <div class="text-center mt-3"><span class="fs-2 fw-medium ">{{ object.price }}&#x20bd;</span></div>
-      {% if active_version %}
-        <div class="text-center mt-3"><span class="fs-6 fw-medium ">Версия продукта: {{ active_version.version_number }} - {{ active_version.version_name }}</span></div>
-      {% endif %}
+        {% if active_version %}
+          <div class="text-center mt-3"><span
+              class="fs-6 fw-medium ">Версия продукта: {{ active_version.version_number }} - {{ active_version.version_name }}</span>
+          </div>
+        {% endif %}
       </div>
       <div class="col-6 col-md-8">
         <h1 class="mb-3">{{ object.name }}</h1>
