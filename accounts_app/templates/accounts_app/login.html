@@ -23,7 +23,7 @@
       <button class="btn btn-lg btn-success w-100" type="submit">Войти</button>
     </div>
     <div class="d-flex justify-content-center">
-      <a href="#" class="link-secondary">Забыли пароль</a>
+      <a href="{% url 'accounts:reset_password' %}" class="link-secondary">Забыли пароль</a>
     </div>
     <div class="d-flex justify-content-center">
       <a href="{% url 'accounts:registration' %}">Регистрация</a>

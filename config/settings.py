@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "django_rename_app",
     "widget_tweaks",
     "background_task",
+    "captcha",
 
     "main_app",
     "store_app",
@@ -187,3 +188,7 @@ LOGOUT_REDIRECT_URL = reverse_lazy('accounts:login')
 
 if DEBUG:
     AUTH_PASSWORD_VALIDATORS = []
+
+CAPTCHA_BACKGROUND_COLOR = '#212529'
+CAPTCHA_FOREGROUND_COLOR = '#dee2e6'
+CAPTCHA_FONT_SIZE = 26

@@ -80,3 +80,29 @@ def send_email_to_verify(user_id: int, site_id: int):
 
     except Exception as e:
         logger.error(e)
+
+
+@background
+def send_new_user_password(user_id: int, new_password: str, site_id: int):
+    try:
+        user = User.objects.get(pk=user_id)
+        site = Site.objects.get(pk=site_id)
+
+        ctx = {
+            'user': user,
+            'new_password': new_password,
+        }
+
+        html_body = render_to_string('email/email_reset_password.html', context=ctx)
+
+        msg = EmailMultiAlternatives(
+            subject=AccountsAppConfig.reset_password_mail_subject,
+            to=[user.email]
+        )
+        msg.attach_alternative(html_body, 'text/html')
+        msg.send()
+
+        logger.debug(f'Send new password mail to {user.email} complete')
+
+    except Exception as e:
+        logger.error(e)
