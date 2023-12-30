@@ -1,3 +1,4 @@
+from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
@@ -39,7 +40,11 @@ class ArticleDetailView(DetailView):
         self.object.view_count += 1
         self.object.save()
         if self.object.view_count in BlogAppConfig.article_view_counts_congrats:
-            tasks.send_mail.task_article_congrats(self.object.id, self.object.view_count)
+            tasks.send_mail.task_article_congrats(
+                article_id=self.object.id,
+                site_id=get_current_site(self.request).id,
+                view_count=self.object.view_count
+            )
         return self.object
 
 

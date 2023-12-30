@@ -14,6 +14,7 @@ class NewUserAdmin(admin.ModelAdmin):
                     "first_name",
                     "last_name",
                     "email",
+                    "is_email_verify",
                     "country",
                     "phone")
             }

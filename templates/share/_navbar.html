@@ -28,7 +28,7 @@
         {% if user.is_authenticated %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-               aria-expanded="false">Аккаунт</a>
+               aria-expanded="false">{{ user.short_str }}</a>
             <ul class="dropdown-menu">
               <li>
                 <a class="dropdown-item {% if url_name == 'accounts:user_detail' %}disabled{% endif %}"
@@ -50,10 +50,11 @@
             </ul>
           </li>
         {% else %}
-          <li class="nav-item">
+          {% if url_name != 'accounts:login' %}
+          	<li>
             <a class="nav-link" href="{% url 'accounts:login' %}">Войти</a>
           </li>
-
+          {% endif %}           
         {% endif %}
       {% endwith %}
     </ul>

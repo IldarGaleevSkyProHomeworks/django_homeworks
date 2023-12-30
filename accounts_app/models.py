@@ -49,7 +49,17 @@ class User(AbstractUser):
     country = CountryField()
     username = None
     email = models.EmailField(unique=True)
+    is_email_verify = models.BooleanField(default=False, verbose_name='Почта подтверждена')
+
     objects = UserManager()
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
+
+    @property
+    def short_str(self):
+        return f'{self.first_name}' if self.first_name else self.email
+
+    def __str__(self):
+        return f'{self.first_name} {self.last_name} ({self.email})' if (
+                self.first_name or self.last_name) else self.email

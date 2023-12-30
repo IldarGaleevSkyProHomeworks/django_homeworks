@@ -3,7 +3,13 @@
 {% block page_content %}
   <ul>
     <li>{{ user.first_name }}</li>
-    <li>{{ user.email }}</li>
+    <li>
+      {{ user.email }}
+      {% if not user.is_email_verify %}
+        <p>Адрес почты не подтвержден!</p>
+        <a href="{% url 'accounts:email_verify_again' %}">Выслать ссылку подтверждения повторно</a>
+      {% endif %}
+    </li>
     <li>{{ user.phone }}</li>
   </ul>
 {% endblock %}
