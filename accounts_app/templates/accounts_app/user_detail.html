@@ -2,7 +2,7 @@
 
 {% block page_content %}
 
-  <div class="accordion" id="accordionPanelsStayOpenExample">
+  <div class="accordion pt-5" id="accordionPanelsStayOpenExample">
     <div class="accordion-item">
       <h2 class="accordion-header">
         <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -76,7 +76,26 @@
         </h2>
         <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
           <div class="accordion-body">
-            Здесь пока ничего нет!
+            <table class="table table-striped table-hover">
+              <thead>
+              <tr>
+                <th>Название</th>
+                <th>Просмотров</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for article in user.articles.all %}
+                <tr>
+                  <td>
+                    <a href="{% url 'blog_app:article_detail' article.slug %}" target="_blank" rel="noopener noreferrer">
+                      {{ article.title }}
+                    </a>
+                  </td>
+                  <td>{{ article.view_count }}</td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

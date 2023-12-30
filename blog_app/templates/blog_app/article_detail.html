@@ -1,49 +1,51 @@
 {% extends 'share/_base.html' %}
 
 {% block page_content %}
+  {% if user.pk == object.author.pk or user.is_staff %}
     <div class="mt-4 btn-group" role="group">
-        <a href="{% url 'blog_app:article_update' object.slug %}" class="btn btn-primary">Править публикацию</a>
-        <a href="{% url 'blog_app:article_delete' object.slug %}" class="btn btn-danger">Удалить публикацию</a>
+      <a href="{% url 'blog_app:article_update' object.slug %}" class="btn btn-primary">Править публикацию</a>
+      <a href="{% url 'blog_app:article_delete' object.slug %}" class="btn btn-danger">Удалить публикацию</a>
     </div>
-    <article class="pt-3">
-        <h1 class="">{{ object.title }}</h1>
+  {% endif %}
+  <article class="pt-3">
+    <h1 class="">{{ object.title }}</h1>
 
-        {% if object.preview_image %}
-            <img src="{{ object.preview_image.url }}" class="object-fit-cover w-100 mb-4 bottom-transparent"
-                 style="height: 400px;" alt="">
-        {% endif %}
-        <p>{{ object.content_text }}</p>
-        <div class="text-end mt-5">
-            <time class="text-secondary">{{ object.create_date }}</time>
-        </div>
+    {% if object.preview_image %}
+      <img src="{{ object.preview_image.url }}" class="object-fit-cover w-100 mb-4 bottom-transparent"
+           style="height: 400px;" alt="">
+    {% endif %}
+    <p>{{ object.content_text }}</p>
+    <div class="text-end mt-5">
+      <time class="text-secondary">{{ object.create_date }}</time>
+    </div>
 
-        <div class="text-end">
-            <small class="text-muted">Статью просмотрели {{ object.view_count }} раз</small>
-        </div>
-    </article>
-    <div>
+    <div class="text-end">
+      <small class="text-muted">Статью просмотрели {{ object.view_count }} раз</small>
+    </div>
+  </article>
+  <div>
     <h5 class="mt-5 pt-2 border-top">Популярное</h5>
     <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
-        {% for article in popular %}
-                    <div class="col">
-                <div class="card mb-3 h-100" style="max-width: 540px;">
-                    <div class="card-body">
-                        <h6 class="card-title">{{ article.title }}</h6>
-                        <p class="card-text">{{ article.content_text|truncatechars:100 }}</p>
+      {% for article in popular %}
+        <div class="col">
+          <div class="card mb-3 h-100" style="max-width: 540px;">
+            <div class="card-body">
+              <h6 class="card-title">{{ article.title }}</h6>
+              <p class="card-text">{{ article.content_text|truncatechars:100 }}</p>
 
-                        <p class="card-text text-end">
-                            <small class="text-body-secondary ">{{ article.create_date }}</small>
-                        </p>
-                        <a href="{% url 'blog_app:article_detail' article.slug%}" class="stretched-link"></a>
-                    </div>
-
-                    <div class="card-footer">
-                        <small class="text-body-secondary">{{ article.view_count }} просмотров</small>
-                    </div>
-                </div>
+              <p class="card-text text-end">
+                <small class="text-body-secondary ">{{ article.create_date }}</small>
+              </p>
+              <a href="{% url 'blog_app:article_detail' article.slug %}" class="stretched-link"></a>
             </div>
-        {% endfor %}
-        
+
+            <div class="card-footer">
+              <small class="text-body-secondary">{{ article.view_count }} просмотров</small>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+
     </div>
-    </div>
+  </div>
 {% endblock %}

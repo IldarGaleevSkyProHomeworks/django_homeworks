@@ -27,7 +27,7 @@ def task_article_congrats(article_id, site_id, view_count=None):
         logger.warning('Wrong article id')
         return
 
-    if article.author_email:
+    if article.author.email:
         view_count = view_count if view_count else article.view_count
 
         ctx = {
@@ -39,12 +39,12 @@ def task_article_congrats(article_id, site_id, view_count=None):
 
         msg = EmailMultiAlternatives(
             subject=BlogAppConfig.article_congrats_mail_subject,
-            to=[article.author_email]
+            to=[article.author.email]
         )
         msg.attach_alternative(html_body, 'text/html')
         msg.send()
 
-        logger.debug(f'Send mail to {article.author_email} complete')
+        logger.debug(f'Send mail to {article.author.email} complete')
     else:
         logger.debug('Article author email not specified')
 
