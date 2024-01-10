@@ -46,7 +46,7 @@ class User(AbstractUser):
     phone = models.CharField(max_length=12, verbose_name='Телефон')
     user_logo = models.ImageField(upload_to=user_logo_images, storage=HashStorage(),
                                   verbose_name='Лого профиля', **MF_NULL)
-    country = CountryField()
+    country = CountryField(verbose_name='Страна')
     username = None
     email = models.EmailField(unique=True)
     is_email_verify = models.BooleanField(default=False, verbose_name='Почта подтверждена')
