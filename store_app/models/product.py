@@ -22,6 +22,8 @@ class Product(models.Model):
     seller = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='products',
                                verbose_name='Продавец', **MF_NULL)
 
+    is_published = models.BooleanField(default=False, verbose_name='опубликовано')
+
     def __str__(self):
         return f'{self.name}: {self.price:.3}'
 
@@ -32,3 +34,6 @@ class Product(models.Model):
         verbose_name = 'товар'
         verbose_name_plural = 'товары'
         ordering = ('name', 'price', 'create_date', 'modify_date', 'category',)
+        permissions = [
+            ('can_unpublished_product', 'Может отменять публикацию продукта')
+        ]

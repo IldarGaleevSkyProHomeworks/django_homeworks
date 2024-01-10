@@ -14,6 +14,12 @@ class ProductListView(ListView):
     model = Product
     paginate_by = StoreAppConfig.catalog_per_page
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(is_published=True).order_by('-create_date')
+
+        return qs
+
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['form'] = ProductForm()

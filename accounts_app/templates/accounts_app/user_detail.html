@@ -59,6 +59,7 @@
                 <th>Название</th>
                 <th>Категория</th>
                 <th>Цена</th>
+                <th>Статус публикации</th>
               </tr>
               </thead>
               <tbody>
@@ -71,6 +72,13 @@
                   </td>
                   <td>{{ product.category.name }}</td>
                   <td>{{ product.price }}</td>
+                  <td>
+                      {% if product.is_published %}
+                        <span class="text-success-emphasis">Опубликовано</span>
+                      {% else %}
+                        <span class="text-secondary-emphasis">Не опубликовано</span>
+                      {% endif %}
+                  </td>
                 </tr>
               {% endfor %}
               </tbody>

@@ -65,6 +65,11 @@
           </ul>
         </div>
       </div>
+
+      <div class="form-check mb-3">
+        {% render_field form.is_published class='form-check-input' %}
+        <label for="{{ form.is_published.auto_id }}">{{ form.is_published.label }}</label>
+      </div>
     </div>
 
     {% if formset %}

@@ -13,7 +13,7 @@ class IndexView(TemplateView):
         context = super().get_context_data(**kwargs)
 
         context['popular_articles'] = Article.objects.order_by('-view_count')[:MainAppConfig.popular_article_count]
-        context['popular_products'] = Product.objects.all()[:MainAppConfig.popular_product_count]
+        context['popular_products'] = Product.objects.filter(is_published=True)[:MainAppConfig.popular_product_count]
 
         context['title'] = 'Главная'
         return context

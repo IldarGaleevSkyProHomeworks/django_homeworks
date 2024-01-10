@@ -13,7 +13,8 @@ class ProductForm(forms.ModelForm):
             'category',
             'price',
             # 'create_date',
-            'preview_image'
+            'preview_image',
+            'is_published',
         ]
 
     def clean_name(self):
