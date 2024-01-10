@@ -90,7 +90,7 @@
   </div>
     <div class="btn-group" role="group">
         {% if object %}
-          <a class="btn btn-secondary" href="{% url 'store_app:product' object.id %}">Отмена</a>
+          <a class="btn btn-secondary nav-back" href="{% url 'store_app:product' object.id %}">Отмена</a>
         {% endif %}
         <button type="submit" class="btn btn-success w-100">
           <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
