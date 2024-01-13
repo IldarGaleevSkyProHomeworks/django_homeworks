@@ -33,3 +33,14 @@ class ProductForm(forms.ModelForm):
             raise forms.ValidationError('Описание содержит слова из недопустимых тематик: '
                                         f'{", ".join(deprecated_subjects)}')
         return field
+
+
+class ManagerForm(ProductForm):
+
+    class Meta:
+        model = Product
+        fields = [
+            'description',
+            'category',
+            'is_published',
+        ]

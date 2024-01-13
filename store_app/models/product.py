@@ -39,5 +39,8 @@ class Product(models.Model):
         verbose_name_plural = 'товары'
         ordering = ('name', 'price', 'create_date', 'modify_date', 'category',)
         permissions = [
-            ('can_unpublished_product', 'Может отменять публикацию продукта')
+            ('can_unpublished_product', 'Может отменять публикацию продукта'),
+            ('can_change_product_name', 'Может изменять название продукта'),
+            ('can_change_product_description', 'Может изменять описание продукта'),
+            ('can_change_product_category', 'Может изменять категорию продукта'),
         ]

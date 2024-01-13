@@ -3,7 +3,11 @@
 
 {% block page_content %}
   <div class="container mt-4">
-    {% if object.seller and user.pk == object.seller.pk or user.is_staff %}
+    {% comment %}      
+      TODO: if or.. or.. or.......
+      однажды я подружусь с шаблонизатором Джанги 🥺 
+    {% endcomment %}
+    {% if perms.store_app.change_product or perms.store_app.can_change_product_name or perms.store_app.can_change_product_description or perms.store_app.can_unpublished_product or perms.store_app.can_change_product_category %} 
       <div class="btn-group mb-3" role="group">
         <a class="btn btn-primary" href="{% url 'store_app:update_product' object.id %}">Редактировать товар</a>
       </div>

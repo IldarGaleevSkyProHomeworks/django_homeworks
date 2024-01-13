@@ -1,101 +1,153 @@
 {% load widget_tweaks %}
+{% if user.is_owner %}
+	<button class="btn btn-warning">Amma owner!</button>
+{% endif %} 
+
 <form method="post" enctype="multipart/form-data" id="createProductForm">
   {% with WIDGET_ERROR_CLASS='is-invalid' %}
     <div class="row {{ extra_classes }}">
-    <div class="col">
-      {% csrf_token %}
-      <div class="form-floating mb-3">
-        {% render_field form.name class='form-control' placeholder=form.name.label %}
-        <label for="{{ form.name.auto_id }}">{{ form.name.label }}</label>
-        <div class="invalid-feedback">
-          <ul>
-            {% for err in form.name.errors %}
-              <li>{{ err }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-
-      <div class="form-floating mb-3">
-        {% render_field form.description class='form-control' placeholder=form.description.label %}
-        <label for="{{ form.description.auto_id }}">{{ form.description.label }}</label>
-        <div class="invalid-feedback">
-          <ul>
-            {% for err in form.description.errors %}
-              <li>{{ err }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-
-      <div class="input-group mb-3">
-        <label for="{{ form.price.auto_id }}" class="input-group-text">{{ form.price.label }}</label>
-        {% render_field form.price class='form-control' step='0.5' %}
-        <span class="input-group-text">&#x20bd;</span>
-        <div class="invalid-feedback">
-          <ul>
-            {% for err in form.price.errors %}
-              <li>{{ err }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-
-      <div class="input-group mb-3">
-        <label for="{{ form.category.auto_id }}" class="input-group-text">{{ form.category.label }}</label>
-        {% render_field form.category class='form-select' %}
-        <div class="invalid-feedback">
-          <ul>
-            {% for err in form.category.errors %}
-              <li>{{ err }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-
-      <div class="input-group mb-3">
-        <label for="{{ form.preview_image.auto_id }}"
-               class="input-group-text">{{ form.preview_image.label }}</label>
-        {% render_field form.preview_image class='form-control' %}
-        <div class="invalid-feedback">
-          <ul>
-            {% for err in form.preview_image.errors %}
-              <li>{{ err }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-
-      <div class="form-check mb-3">
-        {% render_field form.is_published class='form-check-input' %}
-        <label for="{{ form.is_published.auto_id }}">{{ form.is_published.label }}</label>
-      </div>
-    </div>
-
-    {% if formset %}
       <div class="col">
-        {{ formset.management_form }}
-        <div class="invalid-feedback {% if formset.non_form_errors %}d-block{% endif %}">
-          <ul>
-            {% for non_form_error in formset.non_form_errors %}
-              <li>{{ non_form_error }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-        {% for product_version_form in formset %}
-          {% include 'store_app/share/forms/_form_productversion.html' with form=product_version_form is_inline=True %}
-        {% endfor %}
-      </div>
-  {% endif %}
-  </div>
-    <div class="btn-group" role="group">
-        {% if object %}
-          <a class="btn btn-secondary nav-back" href="{% url 'store_app:product' object.id %}">Отмена</a>
+        {% csrf_token %}
+
+        {% if perms.store_app.change_product or object.seller == user or perms.store_app.can_change_product_name %}
+          <div class="form-floating mb-3">
+            {% render_field form.name class='form-control' placeholder=form.name.label %}
+            <label for="{{ form.name.auto_id }}">{{ form.name.label }}</label>
+            <div class="invalid-feedback">
+              <ul>
+                {% for err in form.name.errors %}
+                  <li>{{ err }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% else %}
+          <p>
+            <b>Название товара:</b> {{ object.name }}
+          </p>
         {% endif %}
+
+        {% if perms.store_app.change_product or object.seller == user or  perms.store_app.can_change_product_description %}
+          <div class="form-floating mb-3">
+            {% render_field form.description class='form-control' placeholder=form.description.label %}
+            <label for="{{ form.description.auto_id }}">{{ form.description.label }}</label>
+            <div class="invalid-feedback">
+              <ul>
+                {% for err in form.description.errors %}
+                  <li>{{ err }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% else %}
+          <p>
+            <b>Описание товара:</b> {{ object.description }}
+          </p>
+        {% endif %}
+
+        {% if perms.store_app.change_product or object.seller == user %}
+          <div class="input-group mb-3">
+            <label for="{{ form.price.auto_id }}" class="input-group-text">{{ form.price.label }}</label>
+            {% render_field form.price class='form-control' step='0.5' %}
+            <span class="input-group-text">&#x20bd;</span>
+            <div class="invalid-feedback">
+              <ul>
+                {% for err in form.price.errors %}
+                  <li>{{ err }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% else %}
+          <p>
+            <b>Цена:</b> {{ object.price }}
+          </p>
+        {% endif %}
+
+        {% if perms.store_app.change_product or object.seller == user or perms.store_app.can_change_product_category %}
+          <div class="input-group mb-3">
+            <label for="{{ form.category.auto_id }}" class="input-group-text">{{ form.category.label }}</label>
+            {% render_field form.category class='form-select' %}
+            <div class="invalid-feedback">
+              <ul>
+                {% for err in form.category.errors %}
+                  <li>{{ err }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% else %}
+          <p>
+            <b>{{ form.category.label }}:</b> {{ object.category }}
+          </p>
+        {% endif %}
+
+        {% if perms.store_app.change_product or object.seller == user %}
+          <div class="input-group mb-3">
+            <label for="{{ form.preview_image.auto_id }}"
+                   class="input-group-text">{{ form.preview_image.label }}</label>
+            {% render_field form.preview_image class='form-control' %}
+            <div class="invalid-feedback">
+              <ul>
+                {% for err in form.preview_image.errors %}
+                  <li>{{ err }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+
+        {% comment %}
+        	доступно:
+        	- если есть права на изменение продукта 
+        	- если есть права на снятие с публикации и продукт опубликован
+        {% endcomment %}
+        {% if perms.store_app.change_product or object.seller == user or perms.store_app.can_unpublished_product and object.is_published %}
+          <div class="form-check mb-3">
+            {% render_field form.is_published class='form-check-input' %}
+            <label for="{{ form.is_published.auto_id }}">{{ form.is_published.label }}</label>
+          </div>
+        {% endif %}
+      </div>
+
+      {% if perms.store_app.change_product or object.seller == user %}
+        {% if formset %}
+          <div class="col">
+            {{ formset.management_form }}          
+            <div class="invalid-feedback {% if formset.non_form_errors %}d-block{% endif %}">
+              <ul>
+                {% for non_form_error in formset.non_form_errors %}
+                  <li>{{ non_form_error }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% for product_version_form in formset %}
+              {% include 'store_app/share/forms/_form_productversion.html' with form=product_version_form is_inline=True %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% elif object.active_version %}
+        {{ formset.management_form }} 
+        <p>
+          <b>Текущая версия продукта:</b> {{ object.active_version }}
+        </p>
+      {% endif %}
+
+    </div>
+    <div class="btn-group" role="group">
+      {% if object %}
+        <a class="btn btn-secondary nav-back" href="{% url 'store_app:product' object.id %}">Отмена</a>
+      {% endif %}
+      {% comment %}      
+      TODO: if or.. or.. or.......
+      {% endcomment %}
+      {% if perms.store_app.change_product or object.seller == user or perms.store_app.can_change_product_name or perms.store_app.can_change_product_description or perms.store_app.can_unpublished_product or perms.store_app.can_change_product_category %}
         <button type="submit" class="btn btn-success w-100">
           <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
           <span class="sr-only">Сохранить</span>
         </button>
-      </div>
+      {% endif %}
+    </div>
+    {{ formset.non_form_errors }}
   {% endwith %}
 </form>
