@@ -32,9 +32,7 @@ class ProductDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        product_version = self.object.versions.filter(is_latest=True).first()
         ctx['title'] = self.object.name
-        ctx['active_version'] = product_version
 
         return ctx
 

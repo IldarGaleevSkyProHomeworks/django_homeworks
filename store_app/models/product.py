@@ -30,6 +30,10 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('store_app:product', kwargs={'pk': self.pk})
 
+    @property
+    def active_version(self):
+        return self.versions.filter(is_latest=True).first()
+
     class Meta:
         verbose_name = 'товар'
         verbose_name_plural = 'товары'

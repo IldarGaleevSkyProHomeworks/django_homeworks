@@ -14,9 +14,9 @@
              class="card-img-top object-fit-{% if object.preview_image %}cover{% else %}none{% endif %}"
              style="height:400px;" alt="{{ object.name }}"/>
         <div class="text-center mt-3"><span class="fs-2 fw-medium ">{{ object.price }}&#x20bd;</span></div>
-        {% if active_version %}
+        {% if object.active_version %}
           <div class="text-center mt-3"><span
-              class="fs-6 fw-medium ">Версия продукта: {{ active_version.version_number }} - {{ active_version.version_name }}</span>
+              class="fs-6 fw-medium ">Версия продукта: {{ object.active_version.version_number }} - {{  object.active_version.version_name }}</span>
           </div>
         {% endif %}
       </div>
