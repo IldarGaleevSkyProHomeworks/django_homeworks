@@ -1,18 +1,32 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
 from django.http import JsonResponse, Http404
 from django.shortcuts import redirect
 from django.templatetags.static import static
 from django.urls import reverse
 from django.views.generic import DetailView, ListView, CreateView, UpdateView
 
-from store_app.forms import ProductForm, ProductVersionFormset
+from store_app.forms import ProductForm, ProductVersionFormset, ManagerForm
 from store_app.models import Product
 from store_app.apps import StoreAppConfig
+
+
+class IsOwner(Permission):
+
+    def has_object_permission(self, request, view, obj):
+        return obj.owner == request.user
 
 
 class ProductListView(ListView):
     model = Product
     paginate_by = StoreAppConfig.catalog_per_page
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(is_published=True).order_by('-create_date')
+
+        return qs
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -26,9 +40,7 @@ class ProductDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        product_version = self.object.versions.filter(is_latest=True).first()
         ctx['title'] = self.object.name
-        ctx['active_version'] = product_version
 
         return ctx
 
@@ -107,28 +119,49 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
             return super().form_invalid(form)
 
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Product
-    form_class = ProductForm
+
+    def test_func(self):
+        curr_user = self.request.user
+        return (self.get_object().seller == self.request.user or
+                any([
+                    curr_user.has_perm('store_app.change_product'),
+                    curr_user.has_perm('store_app.can_unpublished_product'),
+                    curr_user.has_perm('store_app.can_change_product_name'),
+                    curr_user.has_perm('store_app.can_change_product_description'),
+                    curr_user.has_perm('store_app.can_change_product_category'),
+                ])
+                )
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['title'] = f'Редактирование: "{self.object.name}"'
 
-        if self.request.method == 'POST':
-            ctx['formset'] = ProductVersionFormset(self.request.POST, instance=self.object)
-        else:
-            ctx['formset'] = ProductVersionFormset(instance=self.object)
+        if self.request.user.has_perm('catalog_app.changed_product') or self.get_object().seller == self.request.user:
+            if self.request.method == 'POST':
+                ctx['formset'] = ProductVersionFormset(self.request.POST, instance=self.object)
+            else:
+                ctx['formset'] = ProductVersionFormset(instance=self.object)
 
         return ctx
 
     def form_valid(self, form):
-        formset: ProductVersionFormset = self.get_context_data()['formset']
         self.object = form.save()
+        if self.request.user.has_perm('catalog_app.changed_product') or self.get_object().seller == self.request.user:
+            formset: ProductVersionFormset = self.get_context_data()['formset']
 
-        if formset.is_valid():
-            formset.instance = self.object
-            formset.save()
+            if formset.is_valid():
+                formset.instance = self.object
+                formset.save()
+                return redirect(reverse('store_app:product', kwargs={'pk': self.object.id}))
+            return self.render_to_response(self.get_context_data(form=form))
+        else:
             return redirect(reverse('store_app:product', kwargs={'pk': self.object.id}))
 
-        return self.render_to_response(self.get_context_data(form=form))
+    def get_form_class(self):
+        if self.request.user.has_perm('catalog_app.changed_product') or self.get_object().seller == self.request.user:
+            return ProductForm
+        return ManagerForm
+    def form_invalid(self, form):
+        pass

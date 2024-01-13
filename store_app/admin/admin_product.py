@@ -7,7 +7,7 @@ from store_app.models import Product
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'category', 'price', 'seller')
-    list_filter = ('category',)
+    list_filter = ('category', 'is_published')
     search_fields = ('name', 'description', 'category',)
     inlines = [
         ProductVersionInline

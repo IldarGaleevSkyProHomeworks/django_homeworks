@@ -3,6 +3,7 @@
 {% load product_image_filter %}
 {% block page_content %}
 
+    {% if popular_products %}
     <h5 class="mt-5 pt-2">Популярные товары</h5>
     <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
         {% for product in popular_products %}
@@ -31,9 +32,10 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
-
-    <h5 class="mt-5 pt-2 border-top">Популярные статьи</h5>
+    {% if popular_articles %}
+    <h5 class="mt-5 pt-2 {% if popular_products %}border-top{% endif %}">Популярные статьи</h5>
     <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
         {% for article in popular_articles %}
             <div class="col">
@@ -54,6 +56,7 @@
                 </div>
             </div>
         {% endfor %}
-    </div>
+    </div>    	
+    {% endif %} 
 
 {% endblock %}

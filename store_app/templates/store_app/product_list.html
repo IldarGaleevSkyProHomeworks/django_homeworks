@@ -3,24 +3,25 @@
 {% load inclusion_tags %}
 
 {% block page_content %}
-  <div class="row row-cols-1 row-cols-md-4 g-4 mt-3" id="productCards">
-    {% for object in object_list %}
-      {% product_card object %}
-    {% endfor %}
-
-  {% if user.is_authenticated %}
-    <div class="col" id="createProductBtn">
-      <div class="card h-100">
-        <button class="btn w-100 h-100" type="button" data-bs-target="#createProductForm" data-bs-toggle="modal">
-          <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-plus-lg"
-               viewBox="0 0 16 16" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Добавить товар">
-            <path fill-rule="evenodd"
-                  d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
-          </svg>
-        </button>
-      </div>
-    </div>
+  {% if not object_list %}
+    <p class="mt-5">Скоро здесь будут товары, которые вы сможете приобрести</p>
   {% endif %}
+  <div class="row row-cols-1 row-cols-md-4 g-4 mt-3" id="productCards">
+    {% if object_list %}
+      {% for object in object_list %}
+        {% product_card object %}
+      {% endfor %}
+    {% endif %}
+
+    {% if user.is_authenticated %}
+      <div class="col" id="createProductBtn">
+        <div class="card h-100">
+          <button class="btn w-100 h-100" type="button" data-bs-target="#createProductForm" data-bs-toggle="modal">
+            <i class="bi bi-plus-lg" style="font-size: 7em" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Добавить товар"></i>              
+          </button>
+        </div>
+      </div>
+    {% endif %}
   </div>
   {% if is_paginated %}
     <nav aria-label="Страницы с товарами" class="mt-4">
@@ -59,7 +60,7 @@
           <h1 class="modal-title fs-5" id="createProductFormLabel">Добавить новый товар</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-      
+
         {% if user.is_authenticated %}
           <div class="modal-body">
             {% include 'store_app/share/forms/_form_product.html' %}

@@ -13,7 +13,8 @@ class ProductForm(forms.ModelForm):
             'category',
             'price',
             # 'create_date',
-            'preview_image'
+            'preview_image',
+            'is_published',
         ]
 
     def clean_name(self):
@@ -32,3 +33,14 @@ class ProductForm(forms.ModelForm):
             raise forms.ValidationError('Описание содержит слова из недопустимых тематик: '
                                         f'{", ".join(deprecated_subjects)}')
         return field
+
+
+class ManagerForm(ProductForm):
+
+    class Meta:
+        model = Product
+        fields = [
+            'description',
+            'category',
+            'is_published',
+        ]

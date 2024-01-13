@@ -23,8 +23,8 @@ urlpatterns = [
     path('', include('main_app.urls')),
     path("captcha/", include('captcha.urls')),
     path("admin/", admin.site.urls),
-    path('catalog/', include('store_app.urls')),
-    path('articles/', include('blog_app.urls')),
+    path('catalog/', include('store_app.urls', namespace='store_app')),
+    path('articles/', include('blog_app.urls', namespace='blog_app')),
     path('accounts/', include('accounts_app.urls', namespace='accounts')),
 ]
 

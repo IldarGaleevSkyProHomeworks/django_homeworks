@@ -53,6 +53,11 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
     model = Article
     fields = ('title', 'content_text', 'preview_image', 'is_published')
 
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['title'] = 'Новая публикация'
+        return ctx
+
     def form_valid(self, form):
         if form.is_valid():
             new_obj = form.save(commit=False)
@@ -64,6 +69,11 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
 class ArticleUpdateView(LoginRequiredMixin, UpdateView):
     model = Article
     fields = ('title', 'content_text', 'preview_image', 'is_published')
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['title'] = f'Правка публикации "{self.object.title}"'
+        return ctx
 
     def form_valid(self, form):
         if form.is_valid():

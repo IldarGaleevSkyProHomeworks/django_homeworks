@@ -22,13 +22,25 @@ class Product(models.Model):
     seller = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='products',
                                verbose_name='Продавец', **MF_NULL)
 
+    is_published = models.BooleanField(default=False, verbose_name='опубликовано')
+
     def __str__(self):
         return f'{self.name}: {self.price:.3}'
 
     def get_absolute_url(self):
         return reverse('store_app:product', kwargs={'pk': self.pk})
 
+    @property
+    def active_version(self):
+        return self.versions.filter(is_latest=True).first()
+
     class Meta:
         verbose_name = 'товар'
         verbose_name_plural = 'товары'
         ordering = ('name', 'price', 'create_date', 'modify_date', 'category',)
+        permissions = [
+            ('can_unpublished_product', 'Может отменять публикацию продукта'),
+            ('can_change_product_name', 'Может изменять название продукта'),
+            ('can_change_product_description', 'Может изменять описание продукта'),
+            ('can_change_product_category', 'Может изменять категорию продукта'),
+        ]
