@@ -12,12 +12,6 @@ from store_app.models import Product
 from store_app.apps import StoreAppConfig
 
 
-class IsOwner(Permission):
-
-    def has_object_permission(self, request, view, obj):
-        return obj.owner == request.user
-
-
 class ProductListView(ListView):
     model = Product
     paginate_by = StoreAppConfig.catalog_per_page
@@ -163,5 +157,3 @@ class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if self.request.user.has_perm('catalog_app.changed_product') or self.get_object().seller == self.request.user:
             return ProductForm
         return ManagerForm
-    def form_invalid(self, form):
-        pass

@@ -1,7 +1,4 @@
 {% load widget_tweaks %}
-{% if user.is_owner %}
-	<button class="btn btn-warning">Amma owner!</button>
-{% endif %} 
 
 <form method="post" enctype="multipart/form-data" id="createProductForm">
   {% with WIDGET_ERROR_CLASS='is-invalid' %}
