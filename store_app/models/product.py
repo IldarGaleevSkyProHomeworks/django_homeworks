@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.core.cache import cache
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
@@ -32,7 +34,15 @@ class Product(models.Model):
 
     @property
     def active_version(self):
-        return self.versions.filter(is_latest=True).first()
+        if not settings.CACHE_ENABLED:
+            return self.versions.filter(is_latest=True).first()
+        return cache.get_or_set(
+            key=f'product_{self.pk}_version',
+            default=self.versions.filter(is_latest=True).first(),
+
+            # TODO: need timeout config manager
+            # timeout=30
+        )
 
     class Meta:
         verbose_name = 'товар'
