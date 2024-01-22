@@ -32,6 +32,7 @@ SECRET_KEY = "django-insecure-dh_vr-pdwm3f34#*ig3j8tyvg73@hssgmzvj#zsa9^^s#azb_f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 DEBUG_MAIL = env.bool('DEBUG_MAIL', False)
+CACHE_ENABLED = env.bool('CACHE_ENABLED', False)
 
 INTERNAL_IPS = (
     '127.0.0.1',
@@ -69,6 +70,12 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+if CACHE_ENABLED:
+    MIDDLEWARE.extend([
+        "django.middleware.cache.UpdateCacheMiddleware",
+        "django.middleware.cache.FetchFromCacheMiddleware",
+    ])
 
 ROOT_URLCONF = "config.urls"
 
@@ -192,3 +199,18 @@ if DEBUG:
 CAPTCHA_BACKGROUND_COLOR = '#212529'
 CAPTCHA_FOREGROUND_COLOR = '#dee2e6'
 CAPTCHA_FONT_SIZE = 26
+
+if CACHE_ENABLED:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": env.str('REDIS_CONNECTION_STRING', 'redis://127.0.0.1:6379'),
+            "OPTIONS": {
+                "db": env.int('REDIS_CACHE_DATABASE', 1),
+            }
+        }
+    }
+
+    PAGE_CACHE_TIME = env.int('PAGE_CACHE_TIME', 60)
+else:
+    PAGE_CACHE_TIME = 0
