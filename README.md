@@ -124,10 +124,11 @@ python .\manage.py process_tasks
 
 ### Кеширование
 
-| Переменная             | Файл настроек                            | Назначение                             |
-|------------------------|------------------------------------------|----------------------------------------|
-| `CACHE_ENABLED`        | [config/settings.py](config/settings.py) | Включить кеширование                   |
-| `REDIS_CACHE_DATABASE` | [config/settings.py](config/settings.py) | БД Redis, используемая для кеширования |
+| Переменная             | Файл настроек                            | Назначение                               |
+|------------------------|------------------------------------------|------------------------------------------|
+| `CACHE_ENABLED`        | [config/settings.py](config/settings.py) | Включить кеширование                     |
+| `REDIS_CACHE_DATABASE` | [config/settings.py](config/settings.py) | БД Redis, используемая для кеширования   |
+| `PAGE_CACHE_TIME`      | [config/settings.py](config/settings.py) | Время (сек.) обновления кеша контроллера |
 
 ## Логирование
 

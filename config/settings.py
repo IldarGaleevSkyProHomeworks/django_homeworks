@@ -204,3 +204,7 @@ if CACHE_ENABLED:
             }
         }
     }
+
+    PAGE_CACHE_TIME = env.int('PAGE_CACHE_TIME', 60)
+else:
+    PAGE_CACHE_TIME = 0
