@@ -1,4 +1,4 @@
-# Домашняя работа 6.8
+# Домашняя работа 6.9
 
 <div align="center">
 <a href="https://wakatime.com/@IldarGaleev/projects/fereckcopm"><img src="https://wakatime.com/badge/user/45799db8-b1f8-4627-9264-2c8d4c352567/project/018beb28-96ef-4887-b044-66638d506f2f.svg" alt="wakatime"></a>
@@ -15,62 +15,6 @@ poetry install
 3. Задайте необходимые [переменные окружения](#переменные-окружения)
 4. Примените миграции
 
-
-> [!IMPORTANT]
-> 
-> Если перед этим была развернута БД к предыдущим версиям. (Для первичной установки действия из примечания не требуются) 
-> 
-> Для миграции с версии [homework_6_6](https://github.com/IldarGaleevSkyProHomeworks/django_homeworks/tree/homework_6.6) на текущую необходимо:
-> 
-> 1. Отключить приложение `accounts_app`:
->
-> ```python
->   INSTALLED_APPS = [
->       ...
->       # "accounts_app",
->   ]
->   
->   ...
->   
->   # AUTH_USER_MODEL = 'accounts_app.User'
->
-> ```
->
-> 2. Отменить миграции для приложений `admin` и `auth`
->
-> ```PowerShell
->   python .\manage.py migrate admin zero
->   python .\manage.py migrate auth zero
-> ```
->
-> 3. Включить приложение `accounts_app`
->
-> ```python
-> INSTALLED_APPS = [
->   ...
->   "accounts_app",
->   ]
->   
-> ...
->
-> AUTH_USER_MODEL = 'accounts_app.User'
-> ```
-> 
-> 4. Применить миграции
-> 
-> ```PowerShell
-> python .\manage.py migrate
-> ```
-> 
-> 5. Создать новую учетную запись администратора
-> 
-> ```PowerShell
-> python .\manage.py createsuperuser
-> ```
->
->   
-> __P.S.__ миграция с более ранних версий не рекомендуется.
-> Для начала пройдите процедуру миграции к версии [homework_6_6](https://github.com/IldarGaleevSkyProHomeworks/django_homeworks/tree/homework_6.6).
 
 ``` PowerShell 
  python .\manage.py migrate
