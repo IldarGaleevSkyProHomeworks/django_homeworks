@@ -71,6 +71,12 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+if CACHE_ENABLED:
+    MIDDLEWARE.extend([
+        "django.middleware.cache.UpdateCacheMiddleware",
+        "django.middleware.cache.FetchFromCacheMiddleware",
+    ])
+
 ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
